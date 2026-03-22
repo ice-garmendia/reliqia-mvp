@@ -2947,8 +2947,8 @@
         </div>
       </div>
 
-      <button class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px" onclick="goTo('screen-swap')">
-        Send proposal →
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px" onclick="goTo('screen-proposal-summary')">
+        Review proposal →
       </button>
       <button class="btn btn-surface" style="width:100%" onclick="goTo('screen-swap')">
         Cancel
@@ -3028,6 +3028,85 @@
   </div>
 </div>
 
+<!-- ===================== SCREEN: PROPOSAL SUMMARY ===================== -->
+<div class="screen" id="screen-proposal-summary">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+    <button class="btn btn-ghost btn-sm" onclick="goTo('screen-swap-proposal')">← Edit</button>
+  </nav>
+  <div class="page screen-inner">
+    <div class="proposal-page">
+
+      <div style="margin-bottom:24px">
+        <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">Review your proposal</h2>
+        <p style="font-size:13px;color:var(--text-muted)">This is what <strong style="color:var(--text)">@vinylmadrid</strong> will receive.</p>
+      </div>
+
+      <!-- SUMMARY CARD -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px">
+
+        <!-- OFFER SIDE -->
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted)">📦 You offer</span>
+          <span id="ps-offer-total" style="font-size:13px;font-weight:700;color:var(--gold)"></span>
+        </div>
+        <div id="ps-offer-items"></div>
+        <div id="ps-offer-cash" style="display:none;padding:10px 16px;border-top:1px solid var(--border);display:none;align-items:center;gap:10px">
+          <span style="font-size:20px">💵</span>
+          <div style="flex:1">
+            <strong id="ps-offer-cash-amount" style="font-size:14px;display:block"></strong>
+            <span style="font-size:11px;color:var(--text-muted)">Cash added to your offer</span>
+          </div>
+        </div>
+
+        <!-- ARROW -->
+        <div style="text-align:center;padding:10px;font-size:20px;color:var(--gold);border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface2)">⇄</div>
+
+        <!-- REQUEST SIDE -->
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted)">🎯 You request</span>
+          <span id="ps-request-total" style="font-size:13px;font-weight:700;color:var(--gold)"></span>
+        </div>
+        <div id="ps-request-items"></div>
+        <div id="ps-request-cash" style="display:none;padding:10px 16px;border-top:1px solid var(--border);align-items:center;gap:10px">
+          <span style="font-size:20px">💵</span>
+          <div style="flex:1">
+            <strong id="ps-request-cash-amount" style="font-size:14px;display:block"></strong>
+            <span style="font-size:11px;color:var(--text-muted)">Cash you ask them to add</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BALANCE -->
+      <div id="ps-balance-card" style="border-radius:var(--radius);padding:16px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;opacity:0.7">Balance</div>
+          <div id="ps-balance-text" style="font-size:16px;font-weight:800"></div>
+        </div>
+        <div id="ps-balance-icon" style="font-size:32px"></div>
+      </div>
+
+      <!-- MEMBER -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px">🎸</div>
+        <div style="flex:1">
+          <strong style="font-size:14px;display:block">@vinylmadrid</strong>
+          <span style="font-size:12px;color:var(--text-muted)">47 trades · ★ 4.9 · Will be notified instantly</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px" onclick="goTo('screen-swap')">
+        ✓ Send proposal
+      </button>
+      <button class="btn btn-surface" style="width:100%" onclick="goTo('screen-swap-proposal')">
+        ← Back to edit
+      </button>
+
+    </div>
+  </div>
+</div>
+
 <div class="proto-note">Prototype · click to navigate</div>
 
 <script>
@@ -3036,6 +3115,7 @@
     document.getElementById(screenId).classList.add('active');
     window.scrollTo(0, 0);
     if (screenId === 'screen-feed') initReelFeed();
+    if (screenId === 'screen-proposal-summary') renderProposalSummary();
     if (screenId === 'screen-swap-proposal') {
       offerItems.length = 0;
       requestItems.length = 0;
@@ -3300,6 +3380,89 @@
     document.getElementById('search-dropdown').style.display = 'none';
     document.getElementById('search-clear').style.display = 'none';
     input.focus();
+  }
+
+  // ---- PROPOSAL SUMMARY ----
+  function renderProposalSummary() {
+    const offerCashAmt = parseFloat(document.getElementById('offer-cash-amount')?.value) || 0;
+    const requestCashAmt = parseFloat(document.getElementById('request-cash-amount')?.value) || 0;
+    const offerCurrency = document.querySelector('#offer-cash .currency-opt.active')?.textContent || 'USD';
+    const requestCurrency = document.querySelector('#request-cash .currency-opt.active')?.textContent || 'USD';
+
+    const offerItemsVal = offerItems.reduce((s, i) => s + i.value, 0);
+    const requestItemsVal = requestItems.reduce((s, i) => s + i.value, 0);
+    const totalOffer = offerItemsVal + offerCashAmt;
+    const totalRequest = requestItemsVal + requestCashAmt;
+
+    // Render offer items
+    document.getElementById('ps-offer-items').innerHTML = offerItems.length === 0
+      ? '<div style="padding:12px 16px;font-size:13px;color:var(--text-dim)">No items added</div>'
+      : offerItems.map(item => `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border)">
+          <div style="width:36px;height:36px;background:var(--surface2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${item.icon}</div>
+          <div style="flex:1;min-width:0">
+            <strong style="font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.name}</strong>
+            <span style="font-size:11px;color:var(--text-muted)">${item.sub}</span>
+          </div>
+          <span style="font-size:13px;font-weight:700;color:var(--text-muted);flex-shrink:0">$${item.value}</span>
+        </div>`).join('');
+
+    // Render request items
+    document.getElementById('ps-request-items').innerHTML = requestItems.length === 0
+      ? '<div style="padding:12px 16px;font-size:13px;color:var(--text-dim)">No items requested</div>'
+      : requestItems.map(item => `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border)">
+          <div style="width:36px;height:36px;background:var(--surface2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${item.icon}</div>
+          <div style="flex:1;min-width:0">
+            <strong style="font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.name}</strong>
+            <span style="font-size:11px;color:var(--text-muted)">${item.sub}</span>
+          </div>
+          <span style="font-size:13px;font-weight:700;color:var(--text-muted);flex-shrink:0">$${item.value}</span>
+        </div>`).join('');
+
+    // Totals
+    document.getElementById('ps-offer-total').textContent = offerCashAmt > 0
+      ? `$${offerItemsVal} + ${offerCashAmt} ${offerCurrency}` : `$${offerItemsVal}`;
+    document.getElementById('ps-request-total').textContent = requestCashAmt > 0
+      ? `$${requestItemsVal} + ${requestCashAmt} ${requestCurrency}` : `$${requestItemsVal}`;
+
+    // Cash rows
+    const offerCashRow = document.getElementById('ps-offer-cash');
+    if (offerCashAmt > 0) {
+      offerCashRow.style.display = 'flex';
+      document.getElementById('ps-offer-cash-amount').textContent = `${offerCashAmt} ${offerCurrency}`;
+    } else { offerCashRow.style.display = 'none'; }
+
+    const requestCashRow = document.getElementById('ps-request-cash');
+    if (requestCashAmt > 0) {
+      requestCashRow.style.display = 'flex';
+      document.getElementById('ps-request-cash-amount').textContent = `${requestCashAmt} ${requestCurrency}`;
+    } else { requestCashRow.style.display = 'none'; }
+
+    // Balance card
+    const diff = totalOffer - totalRequest;
+    const balanceCard = document.getElementById('ps-balance-card');
+    const balanceText = document.getElementById('ps-balance-text');
+    const balanceIcon = document.getElementById('ps-balance-icon');
+    if (diff === 0) {
+      balanceCard.style.background = 'rgba(76,175,125,0.08)';
+      balanceCard.style.border = '1px solid rgba(76,175,125,0.3)';
+      balanceText.style.color = 'var(--green)';
+      balanceText.textContent = 'Even swap — fair for both sides';
+      balanceIcon.textContent = '⚖️';
+    } else if (diff > 0) {
+      balanceCard.style.background = 'rgba(76,175,125,0.08)';
+      balanceCard.style.border = '1px solid rgba(76,175,125,0.3)';
+      balanceText.style.color = 'var(--green)';
+      balanceText.textContent = `+$${diff} in your favor`;
+      balanceIcon.textContent = '📈';
+    } else {
+      balanceCard.style.background = 'rgba(201,168,76,0.08)';
+      balanceCard.style.border = '1px solid rgba(201,168,76,0.3)';
+      balanceText.style.color = 'var(--gold)';
+      balanceText.textContent = `You're offering $${Math.abs(diff)} less — consider adding items or cash`;
+      balanceIcon.textContent = '💡';
+    }
   }
 
   // Close dropdown when clicking outside
