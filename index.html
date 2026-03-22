@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reliqia — MVP Prototype</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --border: #2e2e2e;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --text: #f0f0f0;
+    --text-muted: #888;
+    --text-dim: #555;
+    --green: #4caf7d;
+    --blue: #4c8ecf;
+    --red: #cf4c4c;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SCREENS */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: block; }
+
+  /* NAV BAR */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    background: rgba(15,15,15,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+  }
+
+  .navbar-logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+
+  .navbar-actions { display: flex; gap: 8px; }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--text-muted); }
+
+  .btn-primary {
+    background: var(--gold);
+    color: #0f0f0f;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+  }
+  .btn-outline:hover { background: rgba(201,168,76,0.1); }
+
+  .btn-surface {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-surface:hover { border-color: var(--text-muted); }
+
+  .btn-lg { padding: 14px 28px; font-size: 15px; border-radius: 10px; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+
+  /* PAGE CONTENT */
+  .page { padding-top: 56px; }
+
+  /* ===================== SCREEN: HOME ===================== */
+
+  .hero {
+    padding: 80px 24px 60px;
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(201,168,76,0.3);
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero h1 span { color: var(--gold); }
+
+  .hero p {
+    font-size: 17px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 36px;
+  }
+
+  .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* FEATURES */
+  .features {
+    padding: 0 24px 80px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 28px; }
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+  }
+
+  .feature-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .feature-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .feature-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* SOCIAL PROOF */
+  .social-proof {
+    border-top: 1px solid var(--border);
+    padding: 48px 24px;
+    text-align: center;
+  }
+
+  .social-proof p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+  .tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+
+  /* ===================== SCREEN: ONBOARDING ===================== */
+
+  .onboarding {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  .step-indicator {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 40px;
+  }
+
+  .step-dot {
+    height: 3px;
+    flex: 1;
+    background: var(--border);
+    border-radius: 2px;
+  }
+  .step-dot.active { background: var(--gold); }
+
+  .onboarding h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .onboarding p {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .option-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+
+  .option-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.15s;
+    font-size: 15px;
+  }
+
+  .option-item:hover, .option-item.selected {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.06);
+    color: var(--gold);
+  }
+
+  .option-check {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .option-item.selected .option-check {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  /* ===================== SCREEN: COLLECTION ===================== */
+
+  .collection-header {
+    padding: 24px 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .collection-header h2 { font-size: 20px; font-weight: 700; }
+
+  .collection-stats {
+    display: flex;
+    gap: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+  }
+
+  .stat-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .stat-chip span { color: var(--gold); font-weight: 700; }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    margin: 0 20px 16px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .alert-banner:hover { background: rgba(201,168,76,0.14); }
+
+  .alert-dot {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.3);
+  }
+
+  .alert-text { flex: 1; }
+  .alert-text strong { font-size: 14px; color: var(--gold); display: block; margin-bottom: 2px; }
+  .alert-text span { font-size: 12px; color: var(--text-muted); }
+  .alert-arrow { color: var(--text-dim); font-size: 18px; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    margin-bottom: 4px;
+  }
+
+  .tab {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ITEM LIST */
+  .item-list { padding: 8px 20px; }
+
+  .item-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .item-card:hover { border-color: var(--text-dim); }
+
+  .item-thumb {
+    width: 52px; height: 52px;
+    border-radius: 8px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .item-info { flex: 1; min-width: 0; }
+  .item-info strong { font-size: 14px; display: block; margin-bottom: 2px; }
+  .item-info span { font-size: 12px; color: var(--text-muted); }
+
+  .item-meta { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+
+  .status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .status-intocable { background: rgba(76,143,207,0.15); color: var(--blue); }
+  .status-trade { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .status-spare { background: rgba(76,175,125,0.15); color: var(--green); }
+
+  .item-value { font-size: 13px; font-weight: 700; color: var(--text-muted); }
+
+  /* ===================== SCREEN: SWAP MATCH ===================== */
+
+  .swap-screen { padding: 24px 20px; max-width: 480px; margin: 0 auto; }
+
+  .swap-header { margin-bottom: 24px; }
+  .swap-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .swap-header p { font-size: 14px; color: var(--text-muted); }
+
+  .swap-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .swap-ai-label {
+    background: rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .swap-body { padding: 20px 16px; }
+
+  .swap-parties {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .swap-side { flex: 1; }
+  .swap-side-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); margin-bottom: 10px; font-weight: 600; }
+
+  .swap-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    text-align: center;
+  }
+
+  .swap-item-icon { font-size: 32px; margin-bottom: 6px; }
+  .swap-item-name { font-size: 13px; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
+  .swap-item-sub { font-size: 11px; color: var(--text-muted); }
+
+  .swap-arrow {
+    font-size: 20px;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .swap-member {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .member-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    border: 1px solid var(--border);
+  }
+
+  .member-info strong { font-size: 14px; display: block; }
+  .member-info span { font-size: 12px; color: var(--text-muted); }
+
+  .member-rep {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  .swap-context {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .swap-context strong { color: var(--text); }
+
+  .swap-actions { display: flex; gap: 10px; }
+  .swap-actions .btn { flex: 1; text-align: center; }
+
+  /* AUTH SCORE */
+  .auth-score {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .score-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--green), #7edb9e);
+  }
+
+  .score-value { font-weight: 700; color: var(--green); font-size: 13px; }
+
+  /* VERIFIED BADGE + TOOLTIP */
+  .verified-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .verified-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .verified-label {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .verified-info {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 10px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .verified-info:hover .tooltip,
+  .verified-info.open .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: #1e1e1e;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    width: 220px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s;
+    z-index: 50;
+    text-align: left;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .tooltip strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 12px; }
+
+  /* ===================== SCREEN: ALERT ===================== */
+
+  .alert-screen { padding: 24px 20px; max-width: 480px; margin: 0 auto; }
+
+  .alert-item-card {
+    background: var(--surface);
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .new-badge {
+    background: var(--gold);
+    color: #0f0f0f;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .alert-item-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .alert-item-body { padding: 16px; }
+
+  .alert-item-main {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .alert-item-thumb {
+    width: 72px; height: 72px;
+    background: var(--surface2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    flex-shrink: 0;
+  }
+
+  .alert-item-details strong { font-size: 16px; display: block; margin-bottom: 4px; }
+  .alert-item-details span { font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 2px; }
+
+  .context-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .pill span { color: var(--text); font-weight: 600; }
+
+  .alert-actions { display: flex; gap: 10px; }
+  .alert-actions .btn { flex: 1; text-align: center; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(15,15,15,0.97);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 8px 0 12px;
+    z-index: 100;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px;
+    transition: all 0.15s;
+  }
+
+  .nav-icon { font-size: 22px; }
+  .nav-label { font-size: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.3px; }
+  .nav-item.active .nav-label { color: var(--gold); }
+  .nav-item.active .nav-icon { filter: none; }
+
+  .nav-badge {
+    position: relative;
+    display: inline-block;
+  }
+  .nav-badge::after {
+    content: '';
+    position: absolute;
+    top: -2px; right: -4px;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+  }
+
+  /* SCREEN WITH BOTTOM NAV */
+  .screen-inner { padding-bottom: 80px; }
+
+  /* DIVIDER */
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    padding: 16px 20px 8px;
+  }
+
+  /* ===================== REEL FEED ===================== */
+
+  #screen-feed {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 200;
+    display: none;
+  }
+  #screen-feed.active { display: block; }
+
+  .reel-navbar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 10;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+  }
+
+  .reel-navbar-logo { font-size: 18px; font-weight: 700; color: var(--gold); }
+  .reel-close {
+    background: rgba(255,255,255,0.12);
+    border: none;
+    color: var(--text);
+    font-size: 20px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .reel-feed {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .reel-feed::-webkit-scrollbar { display: none; }
+
+  .reel-card {
+    height: 100vh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+
+  .reel-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .reel-bg-alert {
+    background: radial-gradient(ellipse at 60% 20%, rgba(76,143,207,0.25) 0%, transparent 60%),
+                linear-gradient(180deg, #0a0a14 0%, #0f0f1a 100%);
+  }
+  .reel-bg-swap {
+    background: radial-gradient(ellipse at 40% 20%, rgba(201,168,76,0.2) 0%, transparent 60%),
+                linear-gradient(180deg, #110f00 0%, #0f0f0a 100%);
+  }
+  .reel-bg-counter {
+    background: radial-gradient(ellipse at 50% 20%, rgba(76,175,125,0.2) 0%, transparent 60%),
+                linear-gradient(180deg, #001109 0%, #0a0f0a 100%);
+  }
+
+  .reel-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 20px 100px;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .reel-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+  .reel-type-alert { background: rgba(76,143,207,0.2); color: #7eb8f7; border: 1px solid rgba(76,143,207,0.4); }
+  .reel-type-swap { background: rgba(201,168,76,0.2); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.4); }
+  .reel-type-counter { background: rgba(76,175,125,0.2); color: #7edb9e; border: 1px solid rgba(76,175,125,0.4); }
+
+  .reel-item-big {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .reel-thumb {
+    width: 80px; height: 80px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    flex-shrink: 0;
+  }
+
+  .reel-item-info strong {
+    font-size: 20px;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .reel-item-info span {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .reel-price {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .reel-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .reel-pill {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .reel-pill span { color: var(--text); font-weight: 600; }
+
+  .reel-score {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .reel-score-bar {
+    flex: 1; height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px; overflow: hidden;
+  }
+  .reel-score-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--green), #7edb9e); }
+  .reel-score-val { font-weight: 700; color: var(--green); font-size: 12px; }
+
+  .reel-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .reel-actions .btn { flex: 1; text-align: center; padding: 14px; font-size: 14px; }
+
+  .reel-swap-parties {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .reel-swap-side { flex: 1; }
+  .reel-swap-side-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); margin-bottom: 8px; font-weight: 600; }
+  .reel-swap-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .reel-swap-box-icon { font-size: 28px; margin-bottom: 4px; }
+  .reel-swap-box-name { font-size: 12px; font-weight: 700; line-height: 1.3; margin-bottom: 2px; }
+  .reel-swap-box-sub { font-size: 10px; color: var(--text-muted); }
+  .reel-swap-arrow { font-size: 22px; color: var(--gold); flex-shrink: 0; }
+
+  .reel-member-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .reel-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .reel-member-info strong { font-size: 13px; display: block; }
+  .reel-member-info span { font-size: 11px; color: var(--text-muted); }
+  .reel-rep { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--green); }
+
+  .reel-swipe-hint {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  .reel-counter {
+    position: absolute;
+    top: 68px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 10;
+  }
+  .reel-dot {
+    width: 3px; height: 20px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.3s;
+  }
+  .reel-dot.active { background: var(--gold); height: 28px; }
+
+  .reel-gradient-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 70%;
+    background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* PROTOTYPE NOTE */
+  .proto-note {
+    position: fixed;
+    bottom: 80px;
+    right: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--text-dim);
+    z-index: 99;
+    pointer-events: none;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ===================== SCREEN: HOME ===================== -->
+<div class="screen active" id="screen-home">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+    <div class="navbar-actions">
+      <button class="btn btn-ghost" onclick="goTo('screen-onboarding')">Log in</button>
+      <button class="btn btn-primary" onclick="goTo('screen-onboarding')">Join</button>
+    </div>
+  </nav>
+  <div class="page">
+    <div class="hero">
+      <div class="hero-badge">Early access — Collectors only</div>
+      <h1>Your collection,<br><span>always evolving</span></h1>
+      <p>A global collector community where collective intelligence and AI work together — so every collection grows smarter. Transactions are the outcome. Community, trust, and shared knowledge are the product.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg" onclick="goTo('screen-onboarding')">Join the community</button>
+        <button class="btn btn-outline btn-lg" onclick="goTo('screen-collection')">See how it works →</button>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Proactive swap</h3>
+          <p>AI detects when your open-to-trade items match what another member is looking for — and proposes the trade.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Real-time alerts</h3>
+          <p>Instant notification the moment exactly what you're searching for gets listed — with full context, not just a title.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Authenticity score</h3>
+          <p>Every item has a score based on real-time photos and expert community validation. No counterfeits, no surprises.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="social-proof">
+      <p>Built for collectors of</p>
+      <div class="tags">
+        <span class="tag">💿 CDs</span>
+        <span class="tag">🎵 Vinyl</span>
+        <span class="tag">📼 Cassettes</span>
+        <span class="tag">🃏 Trading cards</span>
+        <span class="tag">👕 Concert merch</span>
+        <span class="tag">🧸 Toys</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCREEN: ONBOARDING ===================== -->
+<div class="screen" id="screen-onboarding">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+    <button class="btn btn-ghost btn-sm" onclick="goTo('screen-home')">← Back</button>
+  </nav>
+  <div class="page">
+    <div class="onboarding">
+      <div class="step-indicator">
+        <div class="step-dot active"></div>
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+      </div>
+
+      <h2>What do you collect?</h2>
+      <p>Select everything that applies. Your profile and matches are built around your collection — the more you tell us, the better the AI can work for you.</p>
+
+      <div class="option-list">
+        <div class="option-item selected" onclick="toggleOption(this)">
+          <div class="option-check"></div>
+          💿 CDs
+        </div>
+        <div class="option-item selected" onclick="toggleOption(this)">
+          <div class="option-check"></div>
+          🎵 Vinyl records
+        </div>
+        <div class="option-item" onclick="toggleOption(this)">
+          <div class="option-check"></div>
+          📼 Cassettes
+        </div>
+        <div class="option-item" onclick="toggleOption(this)">
+          <div class="option-check"></div>
+          🃏 Trading cards
+        </div>
+        <div class="option-item" onclick="toggleOption(this)">
+          <div class="option-check"></div>
+          👕 Concert merch / memorabilia
+        </div>
+        <div class="option-item" onclick="toggleOption(this)">
+          <div class="option-check"></div>
+          🧸 Toys / figures
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-lg" style="width:100%" onclick="goTo('screen-collection')">
+        Continue →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCREEN: COLLECTION ===================== -->
+<div class="screen" id="screen-collection">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+    <div class="navbar-actions">
+      <button class="btn btn-ghost btn-sm">+ Add item</button>
+    </div>
+  </nav>
+  <div class="page screen-inner">
+
+    <div class="collection-header">
+      <div>
+        <h2>My Collection</h2>
+      </div>
+    </div>
+
+    <div class="collection-stats">
+      <div class="stat-chip"><span>248</span> items</div>
+      <div class="stat-chip"><span>14</span> open to trade</div>
+      <div class="stat-chip"><span>6</span> spare</div>
+      <div class="stat-chip">Est. value <span>$3,840</span></div>
+    </div>
+
+    <!-- SWAP MATCH ALERT -->
+    <div class="alert-banner" onclick="goTo('screen-swap')">
+      <div class="alert-dot"></div>
+      <div class="alert-text">
+        <strong>🔄 New swap match found</strong>
+        <span>AI found a compatible trade with @vinylmadrid — tap to review</span>
+      </div>
+      <div class="alert-arrow">›</div>
+    </div>
+
+    <!-- ALERT BANNER -->
+    <div class="alert-banner" onclick="goTo('screen-alert')" style="border-color: rgba(76,143,207,0.4); background: rgba(76,143,207,0.06);">
+      <div class="alert-dot" style="background: var(--blue); box-shadow: 0 0 0 3px rgba(76,143,207,0.3);"></div>
+      <div class="alert-text">
+        <strong style="color: var(--blue);">⚡ Wishlist alert — just listed</strong>
+        <span>Queen — News of the World (1977 UK first press) — $48</span>
+      </div>
+      <div class="alert-arrow">›</div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active">All</div>
+      <div class="tab">Intocable</div>
+      <div class="tab">Open to trade</div>
+      <div class="tab">Spare</div>
+    </div>
+
+    <div class="item-list">
+
+      <div class="section-title">Open to trade · 14 items</div>
+
+      <div class="item-card" onclick="goTo('screen-swap')">
+        <div class="item-thumb">💿</div>
+        <div class="item-info">
+          <strong>The Beatles — Abbey Road</strong>
+          <span>CD · 1987 Parlophone UK · NM</span>
+          <div class="item-meta">
+            <span class="status-badge status-trade">Open to trade</span>
+            <span class="item-value">$32</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-thumb">💿</div>
+        <div class="item-info">
+          <strong>Pink Floyd — The Wall</strong>
+          <span>CD · 1994 EMI remaster · VG+</span>
+          <div class="item-meta">
+            <span class="status-badge status-trade">Open to trade</span>
+            <span class="item-value">$24</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Spare · 6 items</div>
+
+      <div class="item-card">
+        <div class="item-thumb">💿</div>
+        <div class="item-info">
+          <strong>Nirvana — Nevermind</strong>
+          <span>CD · 1991 DGC US · VG</span>
+          <div class="item-meta">
+            <span class="status-badge status-spare">Spare</span>
+            <span class="item-value">$18</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Intocable · 228 items</div>
+
+      <div class="item-card">
+        <div class="item-thumb">💿</div>
+        <div class="item-info">
+          <strong>Queen — Innuendo</strong>
+          <span>CD · 1991 Parlophone UK · M</span>
+          <div class="item-meta">
+            <span class="status-badge status-intocable">Intocable</span>
+            <span class="item-value">$55</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-thumb">💿</div>
+        <div class="item-info">
+          <strong>Queen — A Kind of Magic</strong>
+          <span>CD · 1986 EMI UK · M</span>
+          <div class="item-meta">
+            <span class="status-badge status-intocable">Intocable</span>
+            <span class="item-value">$42</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active">
+      <div class="nav-icon">📦</div>
+      <div class="nav-label">Collection</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-feed')">
+      <div class="nav-icon nav-badge">🎬</div>
+      <div class="nav-label">Feed</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-swap')">
+      <div class="nav-icon">🔄</div>
+      <div class="nav-label">Swaps</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">👤</div>
+      <div class="nav-label">Profile</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCREEN: SWAP MATCH ===================== -->
+<div class="screen" id="screen-swap">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+    <button class="btn btn-ghost btn-sm" onclick="goTo('screen-collection')">← Back</button>
+  </nav>
+  <div class="page screen-inner">
+    <div class="swap-screen">
+
+      <div class="swap-header">
+        <h2>🔄 Swap match</h2>
+        <p>AI found a trade that works for both collections.</p>
+      </div>
+
+      <div class="swap-card">
+        <div class="swap-ai-label">
+          ✦ AI match · 94% compatibility
+        </div>
+        <div class="swap-body">
+
+          <div class="swap-parties">
+            <div class="swap-side">
+              <div class="swap-side-label">You offer</div>
+              <div class="swap-item">
+                <div class="swap-item-icon">💿</div>
+                <div class="swap-item-name">The Beatles<br>Abbey Road</div>
+                <div class="swap-item-sub">CD · 1987 UK · NM · $32</div>
+              </div>
+            </div>
+            <div class="swap-arrow">⇄</div>
+            <div class="swap-side">
+              <div class="swap-side-label">You receive</div>
+              <div class="swap-item">
+                <div class="swap-item-icon">🎵</div>
+                <div class="swap-item-name">Queen<br>Jazz</div>
+                <div class="swap-item-sub">Vinyl · 1978 EMI UK · VG+ · $38</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swap-member">
+            <div class="member-avatar">🎸</div>
+            <div class="member-info">
+              <strong>@vinylmadrid</strong>
+              <span>Member since 2024 · 47 trades completed</span>
+            </div>
+            <div class="member-rep">★ 4.9</div>
+          </div>
+
+          <div class="verified-badge">
+            <span class="verified-pct">91% verified</span>
+            <span class="verified-label">from seller photos</span>
+            <div class="verified-info" onclick="this.classList.toggle('open')">i
+              <div class="tooltip">
+                <strong>What does this mean?</strong>
+                Based on the photos the seller uploaded, our system checked that the item matches what's described — pressing, condition, and format. The higher the %, the more it lines up.
+              </div>
+            </div>
+          </div>
+
+          <div class="swap-context">
+            <strong>Why this match?</strong> You marked Abbey Road as open to trade. @vinylmadrid has Jazz in their wishlist and collects CDs like yours. Their collection shifted toward vinyl — your CD fits their gap.
+          </div>
+
+          <div class="swap-actions">
+            <button class="btn btn-surface">Pass</button>
+            <button class="btn btn-primary">Explore trade →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="goTo('screen-collection')">
+      <div class="nav-icon">📦</div>
+      <div class="nav-label">Collection</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-feed')">
+      <div class="nav-icon nav-badge">🎬</div>
+      <div class="nav-label">Feed</div>
+    </div>
+    <div class="nav-item active">
+      <div class="nav-icon">🔄</div>
+      <div class="nav-label">Swaps</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">👤</div>
+      <div class="nav-label">Profile</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCREEN: ALERT ===================== -->
+<div class="screen" id="screen-alert">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+    <button class="btn btn-ghost btn-sm" onclick="goTo('screen-collection')">← Back</button>
+  </nav>
+  <div class="page screen-inner">
+    <div class="alert-screen">
+
+      <div class="swap-header">
+        <h2>⚡ Wishlist alert</h2>
+        <p>Listed 4 minutes ago — you're seeing this first.</p>
+      </div>
+
+      <div class="alert-item-card">
+        <div class="alert-item-header">
+          <span style="font-size:13px; color: var(--text-muted);">Exact wishlist match</span>
+          <span class="new-badge">Just listed</span>
+        </div>
+        <div class="alert-item-body">
+          <div class="alert-item-main">
+            <div class="alert-item-thumb">🎵</div>
+            <div class="alert-item-details">
+              <strong>Queen — News of the World</strong>
+              <span>Vinyl · 1977 EMI UK · First pressing</span>
+              <span>Condition: VG+</span>
+              <span style="color: var(--gold); font-weight: 700; font-size:15px; margin-top:4px;">$48</span>
+            </div>
+          </div>
+
+          <div class="context-pills">
+            <div class="pill">Matrix: <span>EMTC 3–1U / EMTC 4–1U</span></div>
+            <div class="pill">Avg sold: <span>$52</span></div>
+            <div class="pill">Last sale: <span>3 weeks ago</span></div>
+            <div class="pill">Seller rep: <span>★ 4.8</span></div>
+          </div>
+
+          <div class="verified-badge">
+            <span class="verified-pct">88% verified</span>
+            <span class="verified-label">from seller photos</span>
+            <div class="verified-info" onclick="this.classList.toggle('open')">i
+              <div class="tooltip">
+                <strong>What does this mean?</strong>
+                Based on the photos the seller uploaded, our system checked that the item matches what's described — pressing, condition, and format. The higher the %, the more it lines up.
+              </div>
+            </div>
+          </div>
+
+          <div class="alert-actions">
+            <button class="btn btn-surface">Save for later</button>
+            <button class="btn btn-primary">Make an offer →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="goTo('screen-collection')">
+      <div class="nav-icon">📦</div>
+      <div class="nav-label">Collection</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-feed')">
+      <div class="nav-icon nav-badge">🎬</div>
+      <div class="nav-label">Feed</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-swap')">
+      <div class="nav-icon">🔄</div>
+      <div class="nav-label">Swaps</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">👤</div>
+      <div class="nav-label">Profile</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCREEN: REEL FEED ===================== -->
+<div class="screen" id="screen-feed">
+  <nav class="reel-navbar">
+    <div class="reel-navbar-logo">Reliqia</div>
+    <button class="reel-close" onclick="goTo('screen-collection')">✕</button>
+  </nav>
+
+  <div class="reel-counter" id="reel-counter"></div>
+
+  <div class="reel-feed" id="reel-feed">
+
+    <!-- CARD 1: Wishlist Alert -->
+    <div class="reel-card">
+      <div class="reel-bg reel-bg-alert"></div>
+      <div class="reel-gradient-bottom"></div>
+      <div class="reel-content">
+        <div class="reel-type-badge reel-type-alert">⚡ Wishlist match · Just listed</div>
+        <div class="reel-item-big">
+          <div class="reel-thumb">🎵</div>
+          <div class="reel-item-info">
+            <strong>Queen — News of the World</strong>
+            <span>Vinyl · 1977 EMI UK</span>
+            <span>First pressing · Condition VG+</span>
+          </div>
+        </div>
+        <div class="reel-price">$48</div>
+        <div class="reel-pills">
+          <div class="reel-pill">Matrix <span>EMTC 3–1U</span></div>
+          <div class="reel-pill">Avg sold <span>$52</span></div>
+          <div class="reel-pill">Last sale <span>3 wks ago</span></div>
+          <div class="reel-pill">Seller <span>★ 4.8</span></div>
+        </div>
+        <div class="verified-badge">
+          <span class="verified-pct">88% verified</span>
+          <span class="verified-label">from seller photos</span>
+          <div class="verified-info" onclick="this.classList.toggle('open')">i
+            <div class="tooltip">
+              <strong>What does this mean?</strong>
+              Based on the photos the seller uploaded, our system checked that the item matches what's described — pressing, condition, and format. The higher the %, the more it lines up.
+            </div>
+          </div>
+        </div>
+        <div class="reel-actions">
+          <button class="btn btn-surface">Save</button>
+          <button class="btn btn-primary">Make an offer →</button>
+        </div>
+        <div class="reel-swipe-hint">
+          <span>↑</span>
+          <span>swipe for next</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Swap Match -->
+    <div class="reel-card">
+      <div class="reel-bg reel-bg-swap"></div>
+      <div class="reel-gradient-bottom"></div>
+      <div class="reel-content">
+        <div class="reel-type-badge reel-type-swap">🔄 Swap match · 94% compatibility</div>
+        <div class="reel-swap-parties">
+          <div class="reel-swap-side">
+            <div class="reel-swap-side-label">You offer</div>
+            <div class="reel-swap-box">
+              <div class="reel-swap-box-icon">💿</div>
+              <div class="reel-swap-box-name">The Beatles<br>Abbey Road</div>
+              <div class="reel-swap-box-sub">CD · 1987 UK · NM · $32</div>
+            </div>
+          </div>
+          <div class="reel-swap-arrow">⇄</div>
+          <div class="reel-swap-side">
+            <div class="reel-swap-side-label">You receive</div>
+            <div class="reel-swap-box">
+              <div class="reel-swap-box-icon">🎵</div>
+              <div class="reel-swap-box-name">Queen<br>Jazz</div>
+              <div class="reel-swap-box-sub">Vinyl · 1978 EMI · VG+ · $38</div>
+            </div>
+          </div>
+        </div>
+        <div class="reel-member-row">
+          <div class="reel-avatar">🎸</div>
+          <div class="reel-member-info">
+            <strong>@vinylmadrid</strong>
+            <span>47 trades completed</span>
+          </div>
+          <div class="reel-rep">★ 4.9</div>
+        </div>
+        <div class="verified-badge">
+          <span class="verified-pct">91% verified</span>
+          <span class="verified-label">from seller photos</span>
+          <div class="verified-info" onclick="this.classList.toggle('open')">i
+            <div class="tooltip">
+              <strong>What does this mean?</strong>
+              Based on the photos the seller uploaded, our system checked that the item matches what's described — pressing, condition, and format. The higher the %, the more it lines up.
+            </div>
+          </div>
+        </div>
+        <div class="reel-actions">
+          <button class="btn btn-surface">Pass</button>
+          <button class="btn btn-primary">Explore trade →</button>
+        </div>
+        <div class="reel-swipe-hint">
+          <span>↑</span>
+          <span>swipe for next</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: Counteroffer -->
+    <div class="reel-card">
+      <div class="reel-bg reel-bg-counter"></div>
+      <div class="reel-gradient-bottom"></div>
+      <div class="reel-content">
+        <div class="reel-type-badge reel-type-counter">↩️ Counteroffer received</div>
+        <div class="reel-member-row">
+          <div class="reel-avatar">🎧</div>
+          <div class="reel-member-info">
+            <strong>@recordhunter_ba</strong>
+            <span>Replied to your swap proposal</span>
+          </div>
+          <div class="reel-rep">★ 4.7</div>
+        </div>
+        <div class="reel-swap-parties">
+          <div class="reel-swap-side">
+            <div class="reel-swap-side-label">They want</div>
+            <div class="reel-swap-box">
+              <div class="reel-swap-box-icon">💿</div>
+              <div class="reel-swap-box-name">Pink Floyd<br>The Wall</div>
+              <div class="reel-swap-box-sub">CD · 1994 EMI · VG+ · $24</div>
+            </div>
+          </div>
+          <div class="reel-swap-arrow">⇄</div>
+          <div class="reel-swap-side">
+            <div class="reel-swap-side-label">They offer</div>
+            <div class="reel-swap-box">
+              <div class="reel-swap-box-icon">🎵</div>
+              <div class="reel-swap-box-name">Led Zeppelin<br>IV</div>
+              <div class="reel-swap-box-sub">Vinyl · 1971 Atlantic · VG · $29</div>
+            </div>
+          </div>
+        </div>
+        <div class="reel-pills">
+          <div class="reel-pill">Value diff <span>+$5 in your favor</span></div>
+          <div class="reel-pill">Auth <span>87/100</span></div>
+        </div>
+        <div class="reel-actions">
+          <button class="btn btn-surface">Decline</button>
+          <button class="btn btn-outline" style="flex:1; text-align:center">Counter back</button>
+          <button class="btn btn-primary">Accept ✓</button>
+        </div>
+        <div class="reel-swipe-hint">
+          <span>↑</span>
+          <span>swipe for next</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: Wishlist Alert -->
+    <div class="reel-card">
+      <div class="reel-bg reel-bg-alert"></div>
+      <div class="reel-gradient-bottom"></div>
+      <div class="reel-content">
+        <div class="reel-type-badge reel-type-alert">⚡ Wishlist match · 12 min ago</div>
+        <div class="reel-item-big">
+          <div class="reel-thumb">💿</div>
+          <div class="reel-item-info">
+            <strong>Radiohead — OK Computer</strong>
+            <span>CD · 1997 Parlophone UK</span>
+            <span>Original press · Condition NM</span>
+          </div>
+        </div>
+        <div class="reel-price">$22</div>
+        <div class="reel-pills">
+          <div class="reel-pill">IFPI <span>verified</span></div>
+          <div class="reel-pill">Avg sold <span>$26</span></div>
+          <div class="reel-pill">Last sale <span>1 wk ago</span></div>
+          <div class="reel-pill">Seller <span>★ 5.0</span></div>
+        </div>
+        <div class="verified-badge">
+          <span class="verified-pct">96% verified</span>
+          <span class="verified-label">from seller photos</span>
+          <div class="verified-info" onclick="this.classList.toggle('open')">i
+            <div class="tooltip">
+              <strong>What does this mean?</strong>
+              Based on the photos the seller uploaded, our system checked that the item matches what's described — pressing, condition, and format. The higher the %, the more it lines up.
+            </div>
+          </div>
+        </div>
+        <div class="reel-actions">
+          <button class="btn btn-surface">Save</button>
+          <button class="btn btn-primary">Make an offer →</button>
+        </div>
+        <div class="reel-swipe-hint">
+          <span>↑</span>
+          <span>swipe for next</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5: Swap Match -->
+    <div class="reel-card">
+      <div class="reel-bg reel-bg-swap"></div>
+      <div class="reel-gradient-bottom"></div>
+      <div class="reel-content">
+        <div class="reel-type-badge reel-type-swap">🔄 Swap match · 87% compatibility</div>
+        <div class="reel-swap-parties">
+          <div class="reel-swap-side">
+            <div class="reel-swap-side-label">You offer</div>
+            <div class="reel-swap-box">
+              <div class="reel-swap-box-icon">💿</div>
+              <div class="reel-swap-box-name">Nirvana<br>Nevermind</div>
+              <div class="reel-swap-box-sub">CD · 1991 DGC · VG · $18</div>
+            </div>
+          </div>
+          <div class="reel-swap-arrow">⇄</div>
+          <div class="reel-swap-side">
+            <div class="reel-swap-side-label">You receive</div>
+            <div class="reel-swap-box">
+              <div class="reel-swap-box-icon">🎵</div>
+              <div class="reel-swap-box-name">Queen<br>Sheer Heart Attack</div>
+              <div class="reel-swap-box-sub">Vinyl · 1974 EMI · VG+ · $22</div>
+            </div>
+          </div>
+        </div>
+        <div class="reel-member-row">
+          <div class="reel-avatar">🎼</div>
+          <div class="reel-member-info">
+            <strong>@classicrockbcn</strong>
+            <span>23 trades completed</span>
+          </div>
+          <div class="reel-rep">★ 4.6</div>
+        </div>
+        <div class="reel-actions">
+          <button class="btn btn-surface">Pass</button>
+          <button class="btn btn-primary">Explore trade →</button>
+        </div>
+        <div class="reel-swipe-hint" style="opacity:0.3">
+          <span>· you're up to date ·</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom nav inside feed -->
+  <div class="bottom-nav" style="z-index:300">
+    <div class="nav-item" onclick="goTo('screen-collection')">
+      <div class="nav-icon">📦</div>
+      <div class="nav-label">Collection</div>
+    </div>
+    <div class="nav-item active">
+      <div class="nav-icon">🎬</div>
+      <div class="nav-label">Feed</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-swap')">
+      <div class="nav-icon">🔄</div>
+      <div class="nav-label">Swaps</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">👤</div>
+      <div class="nav-label">Profile</div>
+    </div>
+  </div>
+</div>
+
+<div class="proto-note">Prototype · click to navigate</div>
+
+<script>
+  function goTo(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    window.scrollTo(0, 0);
+    if (screenId === 'screen-feed') initReelFeed();
+  }
+
+  function toggleOption(el) {
+    el.classList.toggle('selected');
+  }
+
+  // ---- REEL FEED ----
+  function initReelFeed() {
+    const feed = document.getElementById('reel-feed');
+    const cards = feed.querySelectorAll('.reel-card');
+    const counter = document.getElementById('reel-counter');
+    const total = cards.length;
+
+    // Build dots
+    counter.innerHTML = '';
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'reel-dot' + (i === 0 ? ' active' : '');
+      counter.appendChild(dot);
+    }
+
+    // Update dots on scroll
+    feed.addEventListener('scroll', () => {
+      const idx = Math.round(feed.scrollTop / window.innerHeight);
+      counter.querySelectorAll('.reel-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === idx);
+      });
+    }, { passive: true });
+
+    // Touch swipe support
+    let touchStartY = 0;
+    feed.addEventListener('touchstart', e => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    feed.addEventListener('touchend', e => {
+      const diff = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(diff) > 40) {
+        const current = Math.round(feed.scrollTop / window.innerHeight);
+        const next = diff > 0
+          ? Math.min(current + 1, total - 1)
+          : Math.max(current - 1, 0);
+        feed.scrollTo({ top: next * window.innerHeight, behavior: 'smooth' });
+      }
+    }, { passive: true });
+
+    // Keyboard support (for desktop testing)
+    document.onkeydown = e => {
+      if (!document.getElementById('screen-feed').classList.contains('active')) return;
+      const current = Math.round(feed.scrollTop / window.innerHeight);
+      if (e.key === 'ArrowDown') feed.scrollTo({ top: Math.min(current + 1, total - 1) * window.innerHeight, behavior: 'smooth' });
+      if (e.key === 'ArrowUp')   feed.scrollTo({ top: Math.max(current - 1, 0) * window.innerHeight, behavior: 'smooth' });
+    };
+
+    // Reset to top on open
+    feed.scrollTo({ top: 0, behavior: 'instant' });
+  }
+</script>
+
+</body>
+</html>
