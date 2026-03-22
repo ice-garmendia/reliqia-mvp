@@ -1211,6 +1211,26 @@
     text-align: center;
   }
 
+  /* FAVORITES */
+  .heart-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+    filter: grayscale(1);
+    opacity: 0.4;
+  }
+  .heart-btn.liked { filter: none; opacity: 1; transform: scale(1.15); }
+  .follow-count {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
   /* PROTOTYPE NOTE */
   .proto-note {
     position: fixed;
@@ -1345,6 +1365,19 @@
   </nav>
   <div class="page screen-inner">
 
+    <div style="padding: 12px 20px 0">
+      <div style="position:relative">
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none">🔍</span>
+        <input
+          type="text"
+          placeholder="Search by artist, title, format..."
+          style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 14px 11px 38px;font-size:14px;color:var(--text);outline:none;font-family:inherit;"
+          onfocus="this.style.borderColor='var(--gold)'"
+          onblur="this.style.borderColor='var(--border)'"
+        >
+      </div>
+    </div>
+
     <div class="collection-header">
       <div>
         <h2>My Collection</h2>
@@ -1401,6 +1434,10 @@
             <span class="item-value">$32</span>
           </div>
         </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <button class="heart-btn" onclick="toggleHeart(this)">❤️</button>
+          <span class="follow-count">12</span>
+        </div>
       </div>
 
       <div class="item-card">
@@ -1412,6 +1449,10 @@
             <span class="status-badge status-trade">Open to trade</span>
             <span class="item-value">$24</span>
           </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <button class="heart-btn" onclick="toggleHeart(this)">❤️</button>
+          <span class="follow-count">8</span>
         </div>
       </div>
 
@@ -1427,6 +1468,10 @@
             <span class="item-value">$18</span>
           </div>
         </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <button class="heart-btn" onclick="toggleHeart(this)">❤️</button>
+          <span class="follow-count">31</span>
+        </div>
       </div>
 
       <div class="section-title">Intocable · 228 items</div>
@@ -1441,6 +1486,10 @@
             <span class="item-value">$55</span>
           </div>
         </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <button class="heart-btn" onclick="toggleHeart(this)">❤️</button>
+          <span class="follow-count">5</span>
+        </div>
       </div>
 
       <div class="item-card">
@@ -1452,6 +1501,10 @@
             <span class="status-badge status-intocable">Intocable</span>
             <span class="item-value">$42</span>
           </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <button class="heart-btn" onclick="toggleHeart(this)">❤️</button>
+          <span class="follow-count">3</span>
         </div>
       </div>
 
@@ -1468,6 +1521,10 @@
               <span class="item-value">~$52</span>
             </div>
           </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+            <button class="heart-btn" onclick="toggleHeart(this)">❤️</button>
+            <span class="follow-count">7</span>
+          </div>
         </div>
 
         <div class="item-card">
@@ -1479,6 +1536,10 @@
               <span class="status-badge" style="background:rgba(207,76,76,0.15);color:#f78e8e;">Searching</span>
               <span class="item-value">~$38</span>
             </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+            <button class="heart-btn" onclick="toggleHeart(this)">❤️</button>
+            <span class="follow-count">2</span>
           </div>
         </div>
 
@@ -1492,6 +1553,10 @@
               <span class="item-value">~$26</span>
             </div>
           </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+            <button class="heart-btn" onclick="toggleHeart(this)">❤️</button>
+            <span class="follow-count">4</span>
+          </div>
         </div>
 
         <div class="item-card">
@@ -1503,6 +1568,10 @@
               <span class="status-badge" style="background:rgba(207,76,76,0.15);color:#f78e8e;">Searching</span>
               <span class="item-value">~$22</span>
             </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+            <button class="heart-btn" onclick="toggleHeart(this)">❤️</button>
+            <span class="follow-count">9</span>
           </div>
         </div>
       </div>
@@ -1519,9 +1588,9 @@
       <div class="nav-icon nav-badge">🎬</div>
       <div class="nav-label">Feed</div>
     </div>
-    <div class="nav-item" onclick="goTo('screen-swap')">
-      <div class="nav-icon">🔄</div>
-      <div class="nav-label">Swaps</div>
+    <div class="nav-item" onclick="goTo('screen-alerts')">
+      <div class="nav-icon nav-badge">🔔</div>
+      <div class="nav-label">Alerts</div>
     </div>
     <div class="nav-item" onclick="goTo('screen-profile')">
       <div class="nav-icon">👤</div>
@@ -1613,9 +1682,9 @@
       <div class="nav-icon nav-badge">🎬</div>
       <div class="nav-label">Feed</div>
     </div>
-    <div class="nav-item active">
-      <div class="nav-icon">🔄</div>
-      <div class="nav-label">Swaps</div>
+    <div class="nav-item active" onclick="goTo('screen-alerts')">
+      <div class="nav-icon">🔔</div>
+      <div class="nav-label">Alerts</div>
     </div>
     <div class="nav-item" onclick="goTo('screen-profile')">
       <div class="nav-icon">👤</div>
@@ -1691,9 +1760,9 @@
       <div class="nav-icon nav-badge">🎬</div>
       <div class="nav-label">Feed</div>
     </div>
-    <div class="nav-item" onclick="goTo('screen-swap')">
-      <div class="nav-icon">🔄</div>
-      <div class="nav-label">Swaps</div>
+    <div class="nav-item" onclick="goTo('screen-alerts')">
+      <div class="nav-icon nav-badge">🔔</div>
+      <div class="nav-label">Alerts</div>
     </div>
     <div class="nav-item" onclick="goTo('screen-profile')">
       <div class="nav-icon">👤</div>
@@ -1955,9 +2024,9 @@
       <div class="nav-icon">🎬</div>
       <div class="nav-label">Feed</div>
     </div>
-    <div class="nav-item" onclick="goTo('screen-swap')">
-      <div class="nav-icon">🔄</div>
-      <div class="nav-label">Swaps</div>
+    <div class="nav-item" onclick="goTo('screen-alerts')">
+      <div class="nav-icon nav-badge">🔔</div>
+      <div class="nav-label">Alerts</div>
     </div>
     <div class="nav-item" onclick="goTo('screen-profile')">
       <div class="nav-icon">👤</div>
@@ -2128,6 +2197,9 @@
         </div>
       </div>
 
+      <button class="btn btn-surface" style="width:100%;margin-bottom:12px" onclick="goTo('screen-favorites')">
+        ❤️ My favorites
+      </button>
       <button class="btn btn-surface" style="width:100%;margin-bottom:12px" onclick="goTo('screen-public-profile')">
         👁 Preview public profile
       </button>
@@ -2147,9 +2219,9 @@
       <div class="nav-icon nav-badge">🎬</div>
       <div class="nav-label">Feed</div>
     </div>
-    <div class="nav-item" onclick="goTo('screen-swap')">
-      <div class="nav-icon">🔄</div>
-      <div class="nav-label">Swaps</div>
+    <div class="nav-item" onclick="goTo('screen-alerts')">
+      <div class="nav-icon nav-badge">🔔</div>
+      <div class="nav-label">Alerts</div>
     </div>
     <div class="nav-item active">
       <div class="nav-icon">👤</div>
@@ -2347,6 +2419,166 @@
   </div>
 </div>
 
+<!-- SCREEN: FAVORITES -->
+<div class="screen" id="screen-favorites">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+    <button class="btn btn-ghost btn-sm" onclick="goTo('screen-collection')">← Back</button>
+  </nav>
+  <div class="page screen-inner">
+    <div style="padding: 16px 20px">
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">Favorites</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Items you're keeping an eye on</p>
+
+      <div class="item-card">
+        <div class="item-thumb">🎵</div>
+        <div class="item-info">
+          <strong>Queen — News of the World</strong>
+          <span>Vinyl · 1977 EMI UK · @vinylmadrid</span>
+          <div class="item-meta">
+            <span class="status-badge status-trade">Open to trade</span>
+            <span class="item-value">$48</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <button class="heart-btn liked" onclick="toggleHeart(this)">❤️</button>
+          <span class="follow-count">52</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-thumb">💿</div>
+        <div class="item-info">
+          <strong>Radiohead — OK Computer</strong>
+          <span>CD · 1997 Parlophone UK · @classicrockbcn</span>
+          <div class="item-meta">
+            <span class="status-badge status-spare">Spare</span>
+            <span class="item-value">$22</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <button class="heart-btn liked" onclick="toggleHeart(this)">❤️</button>
+          <span class="follow-count">18</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-thumb">🎵</div>
+        <div class="item-info">
+          <strong>Led Zeppelin — IV</strong>
+          <span>Vinyl · 1971 Atlantic · @recordhunter_ba</span>
+          <div class="item-meta">
+            <span class="status-badge status-trade">Open to trade</span>
+            <span class="item-value">$29</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <button class="heart-btn liked" onclick="toggleHeart(this)">❤️</button>
+          <span class="follow-count">34</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="goTo('screen-collection')">
+      <div class="nav-icon">📦</div><div class="nav-label">Collection</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-feed')">
+      <div class="nav-icon nav-badge">🎬</div><div class="nav-label">Feed</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-alerts')">
+      <div class="nav-icon nav-badge">🔔</div><div class="nav-label">Alerts</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-profile')">
+      <div class="nav-icon">👤</div><div class="nav-label">Profile</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: UNIFIED ALERTS -->
+<div class="screen" id="screen-alerts">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+    <div style="font-size:13px;color:var(--text-muted)">5 new</div>
+  </nav>
+  <div class="page screen-inner">
+    <div style="padding:16px 20px 0">
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">Alerts</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Swap matches and wishlist activity</p>
+
+      <!-- Swap match -->
+      <div class="alert-banner" onclick="goTo('screen-swap')" style="margin:0 0 10px">
+        <div class="alert-dot"></div>
+        <div class="alert-text">
+          <strong style="color:var(--gold)">🔄 Swap match · 94% compatibility</strong>
+          <span>@vinylmadrid · Beatles Abbey Road CD ⇄ Queen Jazz LP</span>
+          <span style="font-size:11px;color:var(--text-dim);display:block;margin-top:2px">2 minutes ago</span>
+        </div>
+        <div class="alert-arrow">›</div>
+      </div>
+
+      <!-- Wishlist alert -->
+      <div class="alert-banner" style="margin:0 0 10px;border-color:rgba(76,143,207,0.4);background:rgba(76,143,207,0.06)">
+        <div class="alert-dot" style="background:var(--blue);box-shadow:0 0 0 3px rgba(76,143,207,0.3)"></div>
+        <div class="alert-text">
+          <strong style="color:var(--blue)">⚡ Wishlist match · Just listed</strong>
+          <span>Queen — News of the World · Vinyl 1977 UK · $48</span>
+          <span style="font-size:11px;color:var(--text-dim);display:block;margin-top:2px">4 minutes ago</span>
+        </div>
+        <div class="alert-arrow">›</div>
+      </div>
+
+      <!-- Counteroffer -->
+      <div class="alert-banner" style="margin:0 0 10px;border-color:rgba(76,175,125,0.4);background:rgba(76,175,125,0.06)">
+        <div class="alert-dot" style="background:var(--green);box-shadow:0 0 0 3px rgba(76,175,125,0.3)"></div>
+        <div class="alert-text">
+          <strong style="color:var(--green)">↩️ Counteroffer received</strong>
+          <span>@recordhunter_ba replied to your swap proposal</span>
+          <span style="font-size:11px;color:var(--text-dim);display:block;margin-top:2px">1 hour ago</span>
+        </div>
+        <div class="alert-arrow">›</div>
+      </div>
+
+      <!-- Wishlist alert 2 -->
+      <div class="alert-banner" style="margin:0 0 10px;border-color:rgba(76,143,207,0.4);background:rgba(76,143,207,0.06)">
+        <div class="alert-dot" style="background:var(--blue);box-shadow:0 0 0 3px rgba(76,143,207,0.3)"></div>
+        <div class="alert-text">
+          <strong style="color:var(--blue)">⚡ Wishlist match · 12 min ago</strong>
+          <span>Radiohead — OK Computer · CD 1997 UK · $22</span>
+          <span style="font-size:11px;color:var(--text-dim);display:block;margin-top:2px">12 minutes ago</span>
+        </div>
+        <div class="alert-arrow">›</div>
+      </div>
+
+      <!-- Swap match 2 -->
+      <div class="alert-banner" style="margin:0 0 10px">
+        <div class="alert-dot"></div>
+        <div class="alert-text">
+          <strong style="color:var(--gold)">🔄 Swap match · 87% compatibility</strong>
+          <span>@classicrockbcn · Nirvana Nevermind CD ⇄ Queen Sheer Heart Attack LP</span>
+          <span style="font-size:11px;color:var(--text-dim);display:block;margin-top:2px">3 hours ago</span>
+        </div>
+        <div class="alert-arrow">›</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="goTo('screen-collection')">
+      <div class="nav-icon">📦</div><div class="nav-label">Collection</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-feed')">
+      <div class="nav-icon nav-badge">🎬</div><div class="nav-label">Feed</div>
+    </div>
+    <div class="nav-item active">
+      <div class="nav-icon">🔔</div><div class="nav-label">Alerts</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-profile')">
+      <div class="nav-icon">👤</div><div class="nav-label">Profile</div>
+    </div>
+  </div>
+</div>
+
 <div class="proto-note">Prototype · click to navigate</div>
 
 <script>
@@ -2421,6 +2653,10 @@
 
     // Reset to top on open
     feed.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function toggleHeart(btn) {
+    btn.classList.toggle('liked');
   }
 </script>
 
