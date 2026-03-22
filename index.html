@@ -1231,6 +1231,237 @@
     margin-top: 4px;
   }
 
+  /* ===================== SWAP PROPOSAL ===================== */
+  .proposal-page { padding: 16px 20px; max-width: 480px; margin: 0 auto; padding-bottom: 100px; }
+
+  .proposal-side {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .proposal-side-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .proposal-side-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+  }
+  .proposal-side-total {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .proposal-item-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .proposal-item-thumb {
+    width: 36px; height: 36px;
+    background: var(--surface2);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .proposal-item-info { flex: 1; min-width: 0; }
+  .proposal-item-info strong { font-size: 13px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .proposal-item-info span { font-size: 11px; color: var(--text-muted); }
+  .proposal-item-value { font-size: 13px; font-weight: 700; color: var(--text-muted); flex-shrink: 0; }
+  .proposal-item-remove {
+    background: none; border: none; cursor: pointer;
+    color: var(--text-dim); font-size: 16px; padding: 4px;
+    transition: color 0.15s; flex-shrink: 0;
+  }
+  .proposal-item-remove:hover { color: var(--red); }
+
+  .proposal-add-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--gold);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.15s;
+  }
+  .proposal-add-btn:hover { background: rgba(201,168,76,0.06); }
+
+  .cash-row {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cash-toggle {
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+  }
+  .cash-input-row {
+    display: none;
+    padding: 0 16px 12px;
+    gap: 8px;
+    align-items: center;
+  }
+  .cash-input-row.visible { display: flex; }
+  .cash-amount {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    outline: none;
+    font-family: inherit;
+    width: 80px;
+  }
+  .cash-amount:focus { border-color: var(--gold); }
+  .currency-selector {
+    display: flex;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .currency-opt {
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.15s;
+  }
+  .currency-opt.active { background: var(--gold); color: #0f0f0f; }
+
+  .proposal-summary {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+  }
+  .summary-row strong { color: var(--text); }
+  .summary-divider { height: 1px; background: var(--border); margin: 10px 0; }
+  .summary-balance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .balance-positive { color: var(--green); }
+  .balance-negative { color: #f78e8e; }
+  .balance-neutral { color: var(--text-muted); }
+
+  /* ITEM PICKER OVERLAY */
+  .picker-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 500;
+    display: none;
+    align-items: flex-end;
+  }
+  .picker-overlay.open { display: flex; }
+  .picker-sheet {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .picker-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .picker-header h3 { font-size: 16px; font-weight: 700; }
+  .picker-close {
+    background: var(--surface2);
+    border: none;
+    color: var(--text);
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .picker-list { overflow-y: auto; flex: 1; }
+  .picker-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .picker-item:hover { background: var(--surface); }
+  .picker-item.selected { background: rgba(201,168,76,0.08); }
+  .picker-check {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+  }
+  .picker-item.selected .picker-check {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #0f0f0f;
+    font-weight: 700;
+  }
+  .picker-thumb {
+    width: 40px; height: 40px;
+    background: var(--surface2);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .picker-info { flex: 1; }
+  .picker-info strong { font-size: 13px; display: block; margin-bottom: 2px; }
+  .picker-info span { font-size: 11px; color: var(--text-muted); }
+  .picker-value { font-size: 13px; font-weight: 700; color: var(--text-muted); }
+  .picker-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
   /* PROTOTYPE NOTE */
   .proto-note {
     position: fixed;
@@ -1665,7 +1896,7 @@
 
           <div class="swap-actions">
             <button class="btn btn-surface">Pass</button>
-            <button class="btn btn-primary">Explore trade →</button>
+            <button class="btn btn-primary" onclick="goTo('screen-swap-proposal')">Explore trade →</button>
           </div>
         </div>
       </div>
@@ -1869,7 +2100,7 @@
         </div>
         <div class="reel-actions">
           <button class="btn btn-surface">Pass</button>
-          <button class="btn btn-primary">Explore trade →</button>
+          <button class="btn btn-primary" onclick="goTo('screen-swap-proposal')">Explore trade →</button>
         </div>
         <div class="reel-swipe-hint">
           <span>↑</span>
@@ -2013,7 +2244,7 @@
         </div>
         <div class="reel-actions">
           <button class="btn btn-surface">Pass</button>
-          <button class="btn btn-primary">Explore trade →</button>
+          <button class="btn btn-primary" onclick="goTo('screen-swap-proposal')">Explore trade →</button>
         </div>
         <div class="reel-swipe-hint" style="opacity:0.3">
           <span>· you're up to date ·</span>
@@ -2588,6 +2819,181 @@
   </div>
 </div>
 
+<!-- ===================== SCREEN: SWAP PROPOSAL ===================== -->
+<div class="screen" id="screen-swap-proposal">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+    <button class="btn btn-ghost btn-sm" onclick="goTo('screen-swap')">← Back</button>
+  </nav>
+  <div class="page screen-inner">
+    <div class="proposal-page">
+
+      <div style="margin-bottom:20px">
+        <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">Build your offer</h2>
+        <p style="font-size:13px;color:var(--text-muted)">Propose a 1-to-1, bundle, or cash-complemented swap with <strong style="color:var(--text)">@vinylmadrid</strong></p>
+      </div>
+
+      <!-- YOUR SIDE -->
+      <div class="proposal-side" id="offer-side">
+        <div class="proposal-side-header">
+          <span class="proposal-side-label">📦 You offer</span>
+          <span class="proposal-side-total" id="offer-total">$0</span>
+        </div>
+        <div id="offer-items"></div>
+        <div class="proposal-add-btn" onclick="openPicker('offer')">
+          + Add item from your collection
+        </div>
+        <div class="cash-row">
+          <div class="cash-toggle" onclick="toggleCashInput('offer-cash')">
+            <span>💵</span> Add cash to your offer
+          </div>
+        </div>
+        <div class="cash-input-row" id="offer-cash">
+          <input class="cash-amount" type="number" placeholder="0" min="0" oninput="updateSummary()" id="offer-cash-amount">
+          <div class="currency-selector">
+            <div class="currency-opt active" onclick="setCurrency(this,'offer')">USD</div>
+            <div class="currency-opt" onclick="setCurrency(this,'offer')">EUR</div>
+          </div>
+          <span id="offer-cash-label" style="font-size:12px;color:var(--text-muted)">USD</span>
+        </div>
+      </div>
+
+      <div style="text-align:center;font-size:22px;margin:4px 0;color:var(--gold)">⇄</div>
+
+      <!-- THEIR SIDE -->
+      <div class="proposal-side" id="request-side">
+        <div class="proposal-side-header">
+          <span class="proposal-side-label">🎯 You request</span>
+          <span class="proposal-side-total" id="request-total">$0</span>
+        </div>
+        <div id="request-items">
+          <!-- Pre-loaded from the match -->
+          <div class="proposal-item-row" data-value="38">
+            <div class="proposal-item-thumb">🎵</div>
+            <div class="proposal-item-info">
+              <strong>Queen — Jazz</strong>
+              <span>Vinyl · 1978 EMI UK · VG+</span>
+            </div>
+            <span class="proposal-item-value">$38</span>
+            <button class="proposal-item-remove" onclick="removeProposalItem(this, 'request')">✕</button>
+          </div>
+        </div>
+        <div class="proposal-add-btn" onclick="openPicker('request')">
+          + Add another item to request
+        </div>
+        <div class="cash-row">
+          <div class="cash-toggle" onclick="toggleCashInput('request-cash')">
+            <span>💵</span> Ask them to add cash
+          </div>
+        </div>
+        <div class="cash-input-row" id="request-cash">
+          <input class="cash-amount" type="number" placeholder="0" min="0" oninput="updateSummary()" id="request-cash-amount">
+          <div class="currency-selector">
+            <div class="currency-opt active" onclick="setCurrency(this,'request')">USD</div>
+            <div class="currency-opt" onclick="setCurrency(this,'request')">EUR</div>
+          </div>
+          <span id="request-cash-label" style="font-size:12px;color:var(--text-muted)">USD</span>
+        </div>
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="proposal-summary" id="proposal-summary">
+        <div class="summary-row">
+          <span>Your offer</span>
+          <strong id="sum-offer">$0</strong>
+        </div>
+        <div class="summary-row">
+          <span>Their offer</span>
+          <strong id="sum-request">$38</strong>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-balance">
+          <span>Balance</span>
+          <span id="sum-balance" class="balance-negative">–$38 (add items or cash)</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-bottom:10px" onclick="goTo('screen-swap')">
+        Send proposal →
+      </button>
+      <button class="btn btn-surface" style="width:100%" onclick="goTo('screen-swap')">
+        Cancel
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- ITEM PICKER OVERLAY -->
+<div class="picker-overlay" id="picker-overlay" onclick="closePicker(event)">
+  <div class="picker-sheet">
+    <div class="picker-header">
+      <h3>Select items</h3>
+      <button class="picker-close" onclick="closePicker()">✕</button>
+    </div>
+    <div class="picker-list" id="picker-list">
+
+      <div style="padding:8px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim)">Open to trade</div>
+
+      <div class="picker-item" onclick="togglePickerItem(this)" data-name="The Beatles — Abbey Road" data-sub="CD · 1987 Parlophone UK · NM" data-value="32" data-icon="💿">
+        <div class="picker-check"></div>
+        <div class="picker-thumb">💿</div>
+        <div class="picker-info">
+          <strong>The Beatles — Abbey Road</strong>
+          <span>CD · 1987 Parlophone UK · NM</span>
+        </div>
+        <div class="picker-value">$32</div>
+      </div>
+
+      <div class="picker-item" onclick="togglePickerItem(this)" data-name="Pink Floyd — The Wall" data-sub="CD · 1994 EMI remaster · VG+" data-value="24" data-icon="💿">
+        <div class="picker-check"></div>
+        <div class="picker-thumb">💿</div>
+        <div class="picker-info">
+          <strong>Pink Floyd — The Wall</strong>
+          <span>CD · 1994 EMI remaster · VG+</span>
+        </div>
+        <div class="picker-value">$24</div>
+      </div>
+
+      <div style="padding:8px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim)">Spare</div>
+
+      <div class="picker-item" onclick="togglePickerItem(this)" data-name="Nirvana — Nevermind" data-sub="CD · 1991 DGC US · VG" data-value="18" data-icon="💿">
+        <div class="picker-check"></div>
+        <div class="picker-thumb">💿</div>
+        <div class="picker-info">
+          <strong>Nirvana — Nevermind</strong>
+          <span>CD · 1991 DGC US · VG</span>
+        </div>
+        <div class="picker-value">$18</div>
+      </div>
+
+      <div class="picker-item" onclick="togglePickerItem(this)" data-name="Radiohead — The Bends" data-sub="CD · 1995 Parlophone UK · VG+" data-value="20" data-icon="💿">
+        <div class="picker-check"></div>
+        <div class="picker-thumb">💿</div>
+        <div class="picker-info">
+          <strong>Radiohead — The Bends</strong>
+          <span>CD · 1995 Parlophone UK · VG+</span>
+        </div>
+        <div class="picker-value">$20</div>
+      </div>
+
+      <div class="picker-item" onclick="togglePickerItem(this)" data-name="Oasis — (What's the Story) Morning Glory?" data-sub="CD · 1995 Creation UK · NM" data-value="15" data-icon="💿">
+        <div class="picker-check"></div>
+        <div class="picker-thumb">💿</div>
+        <div class="picker-info">
+          <strong>Oasis — Morning Glory</strong>
+          <span>CD · 1995 Creation UK · NM</span>
+        </div>
+        <div class="picker-value">$15</div>
+      </div>
+
+    </div>
+    <div class="picker-footer">
+      <button class="btn btn-primary" style="width:100%" onclick="confirmPicker()">Add selected items →</button>
+    </div>
+  </div>
+</div>
+
 <div class="proto-note">Prototype · click to navigate</div>
 
 <script>
@@ -2666,6 +3072,138 @@
 
   function toggleHeart(btn) {
     btn.classList.toggle('liked');
+  }
+
+  // ---- SWAP PROPOSAL ----
+  let pickerTarget = 'offer';
+
+  const offerItems = [];
+  const requestItems = [{ name: 'Queen — Jazz', sub: 'Vinyl · 1978 EMI UK · VG+', value: 38, icon: '🎵' }];
+
+  function renderProposalSide(side) {
+    const items = side === 'offer' ? offerItems : requestItems;
+    const container = document.getElementById(side === 'offer' ? 'offer-items' : 'request-items');
+    container.innerHTML = items.map((item, i) => `
+      <div class="proposal-item-row" data-value="${item.value}">
+        <div class="proposal-item-thumb">${item.icon}</div>
+        <div class="proposal-item-info">
+          <strong>${item.name}</strong>
+          <span>${item.sub}</span>
+        </div>
+        <span class="proposal-item-value">$${item.value}</span>
+        <button class="proposal-item-remove" onclick="removeProposalItem(this,'${side}',${i})">✕</button>
+      </div>
+    `).join('');
+    updateSummary();
+  }
+
+  function removeProposalItem(btn, side, idx) {
+    if (side === 'offer') offerItems.splice(idx, 1);
+    else requestItems.splice(idx, 1);
+    renderProposalSide(side);
+  }
+
+  function updateSummary() {
+    const offerVal = offerItems.reduce((s, i) => s + i.value, 0);
+    const requestVal = requestItems.reduce((s, i) => s + i.value, 0);
+    const offerCash = parseFloat(document.getElementById('offer-cash-amount')?.value) || 0;
+    const requestCash = parseFloat(document.getElementById('request-cash-amount')?.value) || 0;
+    const offerCurrency = document.querySelector('#offer-cash .currency-opt.active')?.textContent || 'USD';
+    const requestCurrency = document.querySelector('#request-cash .currency-opt.active')?.textContent || 'USD';
+
+    const totalOffer = offerVal + offerCash;
+    const totalRequest = requestVal + requestCash;
+    const diff = totalOffer - totalRequest;
+
+    document.getElementById('offer-total').textContent = offerCash > 0
+      ? `$${offerVal} + ${offerCash} ${offerCurrency}`
+      : `$${offerVal}`;
+    document.getElementById('request-total').textContent = requestCash > 0
+      ? `$${requestVal} + ${requestCash} ${requestCurrency}`
+      : `$${requestVal}`;
+
+    document.getElementById('sum-offer').textContent = offerCash > 0
+      ? `$${offerVal} + ${offerCash} ${offerCurrency}`
+      : `$${offerVal}`;
+    document.getElementById('sum-request').textContent = requestCash > 0
+      ? `$${requestVal} + ${requestCash} ${requestCurrency}`
+      : `$${requestVal}`;
+
+    const balanceEl = document.getElementById('sum-balance');
+    if (diff === 0) {
+      balanceEl.textContent = '✓ Even swap';
+      balanceEl.className = 'balance-neutral';
+    } else if (diff > 0) {
+      balanceEl.textContent = `+$${diff} in your favor`;
+      balanceEl.className = 'balance-positive';
+    } else {
+      balanceEl.textContent = `–$${Math.abs(diff)} (add items or cash)`;
+      balanceEl.className = 'balance-negative';
+    }
+  }
+
+  function toggleCashInput(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('visible');
+    updateSummary();
+  }
+
+  function setCurrency(btn, side) {
+    btn.closest('.currency-selector').querySelectorAll('.currency-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(side + '-cash-label').textContent = btn.textContent;
+    updateSummary();
+  }
+
+  function openPicker(target) {
+    pickerTarget = target;
+    document.querySelectorAll('.picker-item').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('.picker-check').forEach(el => el.textContent = '');
+    document.getElementById('picker-overlay').classList.add('open');
+  }
+
+  function closePicker(e) {
+    if (!e || e.target === document.getElementById('picker-overlay')) {
+      document.getElementById('picker-overlay').classList.remove('open');
+    }
+  }
+
+  function togglePickerItem(el) {
+    el.classList.toggle('selected');
+    const check = el.querySelector('.picker-check');
+    check.textContent = el.classList.contains('selected') ? '✓' : '';
+  }
+
+  function confirmPicker() {
+    const selected = document.querySelectorAll('.picker-item.selected');
+    const target = pickerTarget === 'offer' ? offerItems : requestItems;
+    selected.forEach(el => {
+      target.push({
+        name: el.dataset.name,
+        sub: el.dataset.sub,
+        value: parseInt(el.dataset.value),
+        icon: el.dataset.icon
+      });
+    });
+    renderProposalSide(pickerTarget);
+    closePicker();
+  }
+
+  // Init proposal when screen opens
+  const _origGoTo = goTo;
+  function goTo(screenId) {
+    _origGoTo(screenId);
+    if (screenId === 'screen-swap-proposal') {
+      offerItems.length = 0;
+      requestItems.length = 0;
+      requestItems.push({ name: 'Queen — Jazz', sub: 'Vinyl · 1978 EMI UK · VG+', value: 38, icon: '🎵' });
+      renderProposalSide('offer');
+      renderProposalSide('request');
+      document.getElementById('offer-cash').classList.remove('visible');
+      document.getElementById('request-cash').classList.remove('visible');
+      if (document.getElementById('offer-cash-amount')) document.getElementById('offer-cash-amount').value = '';
+      if (document.getElementById('request-cash-amount')) document.getElementById('request-cash-amount').value = '';
+    }
   }
 </script>
 
