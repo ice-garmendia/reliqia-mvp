@@ -1462,6 +1462,36 @@
     flex-shrink: 0;
   }
 
+  /* SEARCH AUTOCOMPLETE */
+  .search-suggestion {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  .search-suggestion:last-child { border-bottom: none; }
+  .search-suggestion:hover { background: var(--surface2); }
+  .search-suggestion-icon { font-size: 20px; flex-shrink: 0; }
+  .search-suggestion-info { flex: 1; min-width: 0; }
+  .search-suggestion-info strong { font-size: 13px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .search-suggestion-info span { font-size: 11px; color: var(--text-muted); }
+  .search-suggestion-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .search-no-results {
+    padding: 16px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
   /* PROTOTYPE NOTE */
   .proto-note {
     position: fixed;
@@ -1596,17 +1626,21 @@
   </nav>
   <div class="page screen-inner">
 
-    <div style="padding: 12px 20px 0">
+    <div style="padding: 12px 20px 0; position:relative" id="search-container">
       <div style="position:relative">
         <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none">🔍</span>
         <input
+          id="search-input"
           type="text"
           placeholder="Search by artist, title, format..."
-          style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 14px 11px 38px;font-size:14px;color:var(--text);outline:none;font-family:inherit;"
-          onfocus="this.style.borderColor='var(--gold)'"
-          onblur="this.style.borderColor='var(--border)'"
+          style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 38px 11px 38px;font-size:14px;color:var(--text);outline:none;font-family:inherit;"
+          onfocus="this.style.borderColor='var(--gold)';showSuggestions(this.value)"
+          oninput="showSuggestions(this.value)"
+          autocomplete="off"
         >
+        <span id="search-clear" onclick="clearSearch()" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:16px;cursor:pointer;color:var(--text-dim)">✕</span>
       </div>
+      <div id="search-dropdown" style="display:none;position:absolute;left:20px;right:20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-top:6px;overflow:hidden;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.4)"></div>
     </div>
 
     <div class="collection-header">
@@ -3199,6 +3233,81 @@
     renderProposalSide(pickerTarget);
     closePicker();
   }
+
+  // ---- SEARCH AUTOCOMPLETE ----
+  const searchCatalog = [
+    { icon: '💿', name: 'The Beatles — Abbey Road', sub: 'CD · 1987 Parlophone UK · NM', badge: 'Open to trade', badgeColor: 'rgba(201,168,76,0.15)', badgeText: 'var(--gold)' },
+    { icon: '💿', name: 'Pink Floyd — The Wall', sub: 'CD · 1994 EMI remaster · VG+', badge: 'Open to trade', badgeColor: 'rgba(201,168,76,0.15)', badgeText: 'var(--gold)' },
+    { icon: '💿', name: 'Nirvana — Nevermind', sub: 'CD · 1991 DGC US · VG', badge: 'Spare', badgeColor: 'rgba(76,175,125,0.15)', badgeText: 'var(--green)' },
+    { icon: '💿', name: 'Queen — Innuendo', sub: 'CD · 1991 Parlophone UK · M', badge: 'Intocable', badgeColor: 'rgba(76,143,207,0.15)', badgeText: 'var(--blue)' },
+    { icon: '💿', name: 'Queen — A Kind of Magic', sub: 'CD · 1986 EMI UK · M', badge: 'Intocable', badgeColor: 'rgba(76,143,207,0.15)', badgeText: 'var(--blue)' },
+    { icon: '🎵', name: 'Queen — News of the World', sub: 'Vinyl · 1977 EMI UK · First pressing', badge: 'Wishlist', badgeColor: 'rgba(207,76,76,0.15)', badgeText: '#f78e8e' },
+    { icon: '🎵', name: 'Queen — Jazz', sub: 'Vinyl · 1978 EMI UK', badge: 'Wishlist', badgeColor: 'rgba(207,76,76,0.15)', badgeText: '#f78e8e' },
+    { icon: '💿', name: 'Radiohead — OK Computer', sub: 'CD · 1997 Parlophone UK · Original press', badge: 'Wishlist', badgeColor: 'rgba(207,76,76,0.15)', badgeText: '#f78e8e' },
+    { icon: '🎵', name: 'Queen — Sheer Heart Attack', sub: 'Vinyl · 1974 EMI UK', badge: 'Wishlist', badgeColor: 'rgba(207,76,76,0.15)', badgeText: '#f78e8e' },
+    { icon: '💿', name: 'Radiohead — The Bends', sub: 'CD · 1995 Parlophone UK · VG+', badge: 'Spare', badgeColor: 'rgba(76,175,125,0.15)', badgeText: 'var(--green)' },
+    { icon: '💿', name: 'Oasis — Morning Glory', sub: 'CD · 1995 Creation UK · NM', badge: 'Spare', badgeColor: 'rgba(76,175,125,0.15)', badgeText: 'var(--green)' },
+    { icon: '🎵', name: 'Led Zeppelin — IV', sub: 'Vinyl · 1971 Atlantic · VG', badge: 'Favorites', badgeColor: 'rgba(207,76,76,0.1)', badgeText: '#f78e8e' },
+  ];
+
+  function showSuggestions(query) {
+    const dropdown = document.getElementById('search-dropdown');
+    const clearBtn = document.getElementById('search-clear');
+    const input = document.getElementById('search-input');
+
+    clearBtn.style.display = query.length > 0 ? 'block' : 'none';
+
+    if (query.length < 1) {
+      dropdown.style.display = 'none';
+      input.style.borderColor = query.length === 0 ? 'var(--border)' : 'var(--gold)';
+      return;
+    }
+
+    input.style.borderColor = 'var(--gold)';
+    const q = query.toLowerCase();
+    const matches = searchCatalog.filter(item =>
+      item.name.toLowerCase().includes(q) || item.sub.toLowerCase().includes(q)
+    );
+
+    if (matches.length === 0) {
+      dropdown.innerHTML = '<div class="search-no-results">No results for "' + query + '"</div>';
+    } else {
+      dropdown.innerHTML = matches.slice(0, 6).map(item => `
+        <div class="search-suggestion" onclick="selectSuggestion('${item.name.replace(/'/g, "\\'")}')">
+          <div class="search-suggestion-icon">${item.icon}</div>
+          <div class="search-suggestion-info">
+            <strong>${item.name}</strong>
+            <span>${item.sub}</span>
+          </div>
+          <span class="search-suggestion-badge" style="background:${item.badgeColor};color:${item.badgeText}">${item.badge}</span>
+        </div>
+      `).join('');
+    }
+    dropdown.style.display = 'block';
+  }
+
+  function selectSuggestion(name) {
+    document.getElementById('search-input').value = name;
+    document.getElementById('search-dropdown').style.display = 'none';
+    document.getElementById('search-clear').style.display = 'block';
+    document.getElementById('search-input').style.borderColor = 'var(--gold)';
+  }
+
+  function clearSearch() {
+    const input = document.getElementById('search-input');
+    input.value = '';
+    input.style.borderColor = 'var(--border)';
+    document.getElementById('search-dropdown').style.display = 'none';
+    document.getElementById('search-clear').style.display = 'none';
+    input.focus();
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', e => {
+    if (!document.getElementById('search-container')?.contains(e.target)) {
+      document.getElementById('search-dropdown').style.display = 'none';
+    }
+  });
 
 </script>
 
