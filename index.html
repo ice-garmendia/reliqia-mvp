@@ -1156,6 +1156,7 @@
       <div class="tab">Intocable</div>
       <div class="tab">Open to trade</div>
       <div class="tab">Spare</div>
+      <div class="tab">Wishlist</div>
     </div>
 
     <div class="item-list">
@@ -1222,6 +1223,58 @@
           <div class="item-meta">
             <span class="status-badge status-intocable">Intocable</span>
             <span class="item-value">$42</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="wishlist-section" style="display:none">
+        <div class="section-title">Wishlist · 4 items</div>
+
+        <div class="item-card">
+          <div class="item-thumb">🎵</div>
+          <div class="item-info">
+            <strong>Queen — News of the World</strong>
+            <span>Vinyl · 1977 EMI UK · First pressing</span>
+            <div class="item-meta">
+              <span class="status-badge" style="background:rgba(207,76,76,0.15);color:#f78e8e;">Searching</span>
+              <span class="item-value">~$52</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-thumb">🎵</div>
+          <div class="item-info">
+            <strong>Queen — Jazz</strong>
+            <span>Vinyl · 1978 EMI UK</span>
+            <div class="item-meta">
+              <span class="status-badge" style="background:rgba(207,76,76,0.15);color:#f78e8e;">Searching</span>
+              <span class="item-value">~$38</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-thumb">💿</div>
+          <div class="item-info">
+            <strong>Radiohead — OK Computer</strong>
+            <span>CD · 1997 Parlophone UK · Original press</span>
+            <div class="item-meta">
+              <span class="status-badge" style="background:rgba(207,76,76,0.15);color:#f78e8e;">Searching</span>
+              <span class="item-value">~$26</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-thumb">🎵</div>
+          <div class="item-info">
+            <strong>Queen — Sheer Heart Attack</strong>
+            <span>Vinyl · 1974 EMI UK</span>
+            <div class="item-meta">
+              <span class="status-badge" style="background:rgba(207,76,76,0.15);color:#f78e8e;">Searching</span>
+              <span class="item-value">~$22</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1698,6 +1751,16 @@
   function toggleOption(el) {
     el.classList.toggle('selected');
   }
+
+  // Collection tabs
+  document.querySelectorAll('#screen-collection .tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('#screen-collection .tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const isWishlist = tab.textContent.trim() === 'Wishlist';
+      document.getElementById('wishlist-section').style.display = isWishlist ? 'block' : 'none';
+    });
+  });
 
   // ---- REEL FEED ----
   function initReelFeed() {
