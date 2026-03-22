@@ -3002,6 +3002,17 @@
     document.getElementById(screenId).classList.add('active');
     window.scrollTo(0, 0);
     if (screenId === 'screen-feed') initReelFeed();
+    if (screenId === 'screen-swap-proposal') {
+      offerItems.length = 0;
+      requestItems.length = 0;
+      requestItems.push({ name: 'Queen — Jazz', sub: 'Vinyl · 1978 EMI UK · VG+', value: 38, icon: '🎵' });
+      renderProposalSide('offer');
+      renderProposalSide('request');
+      document.getElementById('offer-cash').classList.remove('visible');
+      document.getElementById('request-cash').classList.remove('visible');
+      if (document.getElementById('offer-cash-amount')) document.getElementById('offer-cash-amount').value = '';
+      if (document.getElementById('request-cash-amount')) document.getElementById('request-cash-amount').value = '';
+    }
   }
 
   function toggleOption(el) {
@@ -3189,22 +3200,6 @@
     closePicker();
   }
 
-  // Init proposal when screen opens
-  const _origGoTo = goTo;
-  function goTo(screenId) {
-    _origGoTo(screenId);
-    if (screenId === 'screen-swap-proposal') {
-      offerItems.length = 0;
-      requestItems.length = 0;
-      requestItems.push({ name: 'Queen — Jazz', sub: 'Vinyl · 1978 EMI UK · VG+', value: 38, icon: '🎵' });
-      renderProposalSide('offer');
-      renderProposalSide('request');
-      document.getElementById('offer-cash').classList.remove('visible');
-      document.getElementById('request-cash').classList.remove('visible');
-      if (document.getElementById('offer-cash-amount')) document.getElementById('offer-cash-amount').value = '';
-      if (document.getElementById('request-cash-amount')) document.getElementById('request-cash-amount').value = '';
-    }
-  }
 </script>
 
 </body>
