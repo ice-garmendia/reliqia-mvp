@@ -1820,7 +1820,7 @@
   <nav class="navbar">
     <div class="navbar-logo">Reliqia</div>
     <div class="navbar-actions">
-      <button class="btn btn-ghost btn-sm">+ Add item</button>
+      <button class="btn btn-ghost btn-sm" onclick="goTo('screen-add-item')">+ Add item</button>
     </div>
   </nav>
   <div class="page screen-inner">
@@ -3863,6 +3863,84 @@
   </div>
 </div>
 
+<!-- ===================== SCREEN: ADD ITEM ===================== -->
+<div class="screen" id="screen-add-item">
+  <nav class="navbar">
+    <button class="btn btn-ghost btn-sm" onclick="goTo('screen-collection')">← Back</button>
+    <div class="navbar-logo">Add item</div>
+    <div class="navbar-actions"></div>
+  </nav>
+  <div class="page screen-inner">
+
+    <!-- Format picker -->
+    <div class="section-title" style="margin-top:0">Format</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+      <button class="tab-btn active" style="border-radius:20px;padding:6px 16px;font-size:13px" onclick="selectFormat(this,'vinyl')">🎵 Vinyl</button>
+      <button class="tab-btn" style="border-radius:20px;padding:6px 16px;font-size:13px" onclick="selectFormat(this,'cd')">💿 CD</button>
+      <button class="tab-btn" style="border-radius:20px;padding:6px 16px;font-size:13px" onclick="selectFormat(this,'cassette')">📼 Cassette</button>
+      <button class="tab-btn" style="border-radius:20px;padding:6px 16px;font-size:13px" onclick="selectFormat(this,'other')">📦 Other</button>
+    </div>
+
+    <!-- Item details -->
+    <div class="section-title">Item details</div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
+      <input type="text" placeholder="Artist" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;color:var(--text);font-size:14px;outline:none;width:100%;box-sizing:border-box">
+      <input type="text" placeholder="Title" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;color:var(--text);font-size:14px;outline:none;width:100%;box-sizing:border-box">
+      <input type="text" placeholder="Year · Label · Pressing (e.g. 1986 EMI UK)" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;color:var(--text);font-size:14px;outline:none;width:100%;box-sizing:border-box">
+    </div>
+
+    <!-- Condition -->
+    <div class="section-title">Condition</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+      <button class="tab-btn" style="border-radius:20px;padding:6px 14px;font-size:12px" onclick="selectCond(this)">M</button>
+      <button class="tab-btn" style="border-radius:20px;padding:6px 14px;font-size:12px" onclick="selectCond(this)">NM</button>
+      <button class="tab-btn active" style="border-radius:20px;padding:6px 14px;font-size:12px" onclick="selectCond(this)">VG+</button>
+      <button class="tab-btn" style="border-radius:20px;padding:6px 14px;font-size:12px" onclick="selectCond(this)">VG</button>
+      <button class="tab-btn" style="border-radius:20px;padding:6px 14px;font-size:12px" onclick="selectCond(this)">G+</button>
+      <button class="tab-btn" style="border-radius:20px;padding:6px 14px;font-size:12px" onclick="selectCond(this)">G</button>
+    </div>
+
+    <!-- Status -->
+    <div class="section-title">Status in your collection</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+      <label style="display:flex;align-items:flex-start;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;cursor:pointer">
+        <input type="radio" name="item-status" value="intocable" style="margin-top:2px;accent-color:var(--gold)">
+        <div>
+          <strong style="font-size:13px;display:block">Intocable</strong>
+          <span style="font-size:12px;color:var(--text-muted)">Core of your collection — not for trade or sale</span>
+        </div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;cursor:pointer">
+        <input type="radio" name="item-status" value="trade" checked style="margin-top:2px;accent-color:var(--gold)">
+        <div>
+          <strong style="font-size:13px;display:block">Open to trade or sell</strong>
+          <span style="font-size:12px;color:var(--text-muted)">You'd swap or sell this for the right offer</span>
+        </div>
+      </label>
+    </div>
+
+    <!-- Photos -->
+    <div class="section-title">Photos <span style="font-size:11px;color:var(--text-muted);font-weight:400">(required for authenticity score)</span></div>
+    <div style="display:flex;gap:10px;margin-bottom:8px">
+      <div style="width:80px;height:80px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;flex-shrink:0">📷</div>
+      <div style="width:80px;height:80px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;flex-shrink:0">+</div>
+    </div>
+    <p style="font-size:11px;color:var(--text-dim);margin:0 0 20px">Photos must be taken from the phone — screenshots or images from the internet are not accepted.</p>
+
+    <!-- Estimated value -->
+    <div style="background:var(--surface);border:1px solid var(--gold);border-radius:var(--radius);padding:14px 16px;margin-bottom:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:13px;color:var(--text-muted)">Estimated market value</span>
+        <strong style="font-size:18px;color:var(--gold)">$34 – $42</strong>
+      </div>
+      <p style="font-size:11px;color:var(--text-dim);margin:6px 0 0">Based on recent sales of similar items on Discogs and eBay.</p>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%" onclick="goTo('screen-collection')">Save to my collection</button>
+
+  </div>
+</div>
+
 <div class="proto-note">Prototype · click to navigate</div>
 
 <script>
@@ -4255,6 +4333,15 @@
       });
     });
   });
+
+  function selectFormat(el, val) {
+    el.closest('div').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function selectCond(el) {
+    el.closest('div').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
 
 </script>
 
