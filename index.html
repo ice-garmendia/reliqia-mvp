@@ -1825,23 +1825,6 @@
   </nav>
   <div class="page screen-inner">
 
-    <div style="padding: 12px 20px 0; position:relative" id="search-container">
-      <div style="position:relative">
-        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none">🔍</span>
-        <input
-          id="search-input"
-          type="text"
-          placeholder="Search by artist, title, format..."
-          style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 38px 11px 38px;font-size:14px;color:var(--text);outline:none;font-family:inherit;"
-          onfocus="this.style.borderColor='var(--gold)';showSuggestions(this.value)"
-          oninput="showSuggestions(this.value)"
-          autocomplete="off"
-        >
-        <span id="search-clear" onclick="clearSearch()" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:16px;cursor:pointer;color:var(--text-dim)">✕</span>
-      </div>
-      <div id="search-dropdown" style="display:none;position:absolute;left:20px;right:20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-top:6px;overflow:hidden;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.4)"></div>
-    </div>
-
     <div class="collection-header">
       <div>
         <h2>My collection</h2>
@@ -2051,6 +2034,10 @@
       <div class="nav-icon">📦</div>
       <div class="nav-label">Home</div>
     </div>
+    <div class="nav-item" onclick="goTo('screen-explore')">
+      <div class="nav-icon">🔍</div>
+      <div class="nav-label">Explore</div>
+    </div>
     <div class="nav-item" onclick="goTo('screen-feed')">
       <div class="nav-icon nav-badge">🎬</div>
       <div class="nav-label">Feed</div>
@@ -2147,6 +2134,10 @@
       <div class="nav-icon">📦</div>
       <div class="nav-label">Home</div>
     </div>
+    <div class="nav-item" onclick="goTo('screen-explore')">
+      <div class="nav-icon">🔍</div>
+      <div class="nav-label">Explore</div>
+    </div>
     <div class="nav-item" onclick="goTo('screen-feed')">
       <div class="nav-icon nav-badge">🎬</div>
       <div class="nav-label">Feed</div>
@@ -2225,6 +2216,10 @@
     <div class="nav-item" onclick="goTo('screen-collection')">
       <div class="nav-icon">📦</div>
       <div class="nav-label">Home</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-explore')">
+      <div class="nav-icon">🔍</div>
+      <div class="nav-label">Explore</div>
     </div>
     <div class="nav-item" onclick="goTo('screen-feed')">
       <div class="nav-icon nav-badge">🎬</div>
@@ -2561,6 +2556,10 @@
       <div class="nav-icon">📦</div>
       <div class="nav-label">Home</div>
     </div>
+    <div class="nav-item" onclick="goTo('screen-explore')">
+      <div class="nav-icon">🔍</div>
+      <div class="nav-label">Explore</div>
+    </div>
     <div class="nav-item active">
       <div class="nav-icon">🎬</div>
       <div class="nav-label">Feed</div>
@@ -2758,6 +2757,10 @@
     <div class="nav-item" onclick="goTo('screen-collection')">
       <div class="nav-icon">📦</div>
       <div class="nav-label">Home</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-explore')">
+      <div class="nav-icon">🔍</div>
+      <div class="nav-label">Explore</div>
     </div>
     <div class="nav-item" onclick="goTo('screen-feed')">
       <div class="nav-icon nav-badge">🎬</div>
@@ -3029,6 +3032,9 @@
     <div class="nav-item" onclick="goTo('screen-collection')">
       <div class="nav-icon">📦</div><div class="nav-label">Home</div>
     </div>
+    <div class="nav-item" onclick="goTo('screen-explore')">
+      <div class="nav-icon">🔍</div><div class="nav-label">Explore</div>
+    </div>
     <div class="nav-item" onclick="goTo('screen-feed')">
       <div class="nav-icon nav-badge">🎬</div><div class="nav-label">Feed</div>
     </div>
@@ -3117,6 +3123,9 @@
   <div class="bottom-nav">
     <div class="nav-item" onclick="goTo('screen-collection')">
       <div class="nav-icon">📦</div><div class="nav-label">Home</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-explore')">
+      <div class="nav-icon">🔍</div><div class="nav-label">Explore</div>
     </div>
     <div class="nav-item" onclick="goTo('screen-feed')">
       <div class="nav-icon nav-badge">🎬</div><div class="nav-label">Feed</div>
@@ -3545,6 +3554,9 @@
     <div class="nav-item" onclick="goTo('screen-collection')">
       <div class="nav-icon">📦</div><div class="nav-label">Home</div>
     </div>
+    <div class="nav-item" onclick="goTo('screen-explore')">
+      <div class="nav-icon">🔍</div><div class="nav-label">Explore</div>
+    </div>
     <div class="nav-item" onclick="goTo('screen-feed')">
       <div class="nav-icon">🎬</div><div class="nav-label">Feed</div>
     </div>
@@ -3687,6 +3699,166 @@
         ⚠️ Open a dispute
       </button>
 
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCREEN: EXPLORE ===================== -->
+<div class="screen" id="screen-explore">
+  <nav class="navbar">
+    <div class="navbar-logo">Reliqia</div>
+  </nav>
+  <div class="page screen-inner">
+
+    <!-- SEARCH BAR -->
+    <div style="padding:16px 20px 0;position:relative" id="search-container">
+      <div style="position:relative">
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none">🔍</span>
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search by artist, title, format..."
+          style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 38px 11px 38px;font-size:14px;color:var(--text);outline:none;font-family:inherit;"
+          onfocus="this.style.borderColor='var(--gold)';showSuggestions(this.value)"
+          oninput="showSuggestions(this.value)"
+          autocomplete="off"
+        >
+        <span id="search-clear" onclick="clearSearch()" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:16px;cursor:pointer;color:var(--text-dim)">✕</span>
+      </div>
+      <div id="search-dropdown" style="display:none;position:absolute;left:20px;right:20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-top:6px;overflow:hidden;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.4)"></div>
+    </div>
+
+    <!-- DEFAULT CONTENT -->
+    <div id="explore-content" style="padding:20px 20px 0">
+
+      <!-- TRENDING -->
+      <div style="margin-bottom:24px">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:12px">🔥 Trending now</div>
+        <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none">
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;min-width:140px;flex-shrink:0;cursor:pointer" onclick="goTo('screen-alert')">
+            <div style="font-size:32px;margin-bottom:8px">🎵</div>
+            <strong style="font-size:13px;display:block;margin-bottom:2px">Queen — NOTW</strong>
+            <span style="font-size:11px;color:var(--text-muted)">Vinyl · 1977 UK</span>
+            <div style="font-size:11px;color:var(--text-dim);margin-top:4px">❤️ 52 following</div>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;min-width:140px;flex-shrink:0;cursor:pointer">
+            <div style="font-size:32px;margin-bottom:8px">💿</div>
+            <strong style="font-size:13px;display:block;margin-bottom:2px">Radiohead — OK Computer</strong>
+            <span style="font-size:11px;color:var(--text-muted)">CD · 1997 UK</span>
+            <div style="font-size:11px;color:var(--text-dim);margin-top:4px">❤️ 34 following</div>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;min-width:140px;flex-shrink:0;cursor:pointer">
+            <div style="font-size:32px;margin-bottom:8px">🎵</div>
+            <strong style="font-size:13px;display:block;margin-bottom:2px">Led Zeppelin — IV</strong>
+            <span style="font-size:11px;color:var(--text-muted)">Vinyl · 1971 UK</span>
+            <div style="font-size:11px;color:var(--text-dim);margin-top:4px">❤️ 29 following</div>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;min-width:140px;flex-shrink:0;cursor:pointer">
+            <div style="font-size:32px;margin-bottom:8px">💿</div>
+            <strong style="font-size:13px;display:block;margin-bottom:2px">Pink Floyd — The Wall</strong>
+            <span style="font-size:11px;color:var(--text-muted)">CD · 1994 UK</span>
+            <div style="font-size:11px;color:var(--text-dim);margin-top:4px">❤️ 18 following</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RECENTLY LISTED -->
+      <div style="margin-bottom:24px">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:12px">⚡ Recently listed</div>
+
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="goTo('screen-alert')">
+          <div style="width:44px;height:44px;background:var(--surface2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🎵</div>
+          <div style="flex:1;min-width:0">
+            <strong style="font-size:13px;display:block;margin-bottom:2px">Queen — News of the World</strong>
+            <span style="font-size:11px;color:var(--text-muted)">Vinyl · 1977 EMI UK · VG+</span>
+            <div class="item-location">📍 London, UK</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <strong style="font-size:14px;color:var(--gold);display:block">$48</strong>
+            <span style="font-size:10px;color:var(--text-dim)">4 min ago</span>
+          </div>
+        </div>
+
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer">
+          <div style="width:44px;height:44px;background:var(--surface2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">💿</div>
+          <div style="flex:1;min-width:0">
+            <strong style="font-size:13px;display:block;margin-bottom:2px">Radiohead — OK Computer</strong>
+            <span style="font-size:11px;color:var(--text-muted)">CD · 1997 Parlophone UK · NM</span>
+            <div class="item-location">📍 Manchester, UK</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <strong style="font-size:14px;color:var(--gold);display:block">$22</strong>
+            <span style="font-size:10px;color:var(--text-dim)">12 min ago</span>
+          </div>
+        </div>
+
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer">
+          <div style="width:44px;height:44px;background:var(--surface2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🎵</div>
+          <div style="flex:1;min-width:0">
+            <strong style="font-size:13px;display:block;margin-bottom:2px">The Beatles — Abbey Road</strong>
+            <span style="font-size:11px;color:var(--text-muted)">Vinyl · 1969 Parlophone UK · VG</span>
+            <div class="item-location">📍 Berlin, Germany</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <strong style="font-size:14px;color:var(--gold);display:block">$55</strong>
+            <span style="font-size:10px;color:var(--text-dim)">28 min ago</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COLLECTORS NEAR YOU -->
+      <div style="margin-bottom:24px">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:12px">👥 Collectors near you</div>
+        <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none">
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;min-width:160px;flex-shrink:0;cursor:pointer" onclick="goTo('screen-public-profile')">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:8px">🎸</div>
+            <strong style="font-size:13px;display:block;margin-bottom:2px">@vinylmadrid</strong>
+            <span style="font-size:11px;color:var(--text-muted);display:block">📍 Madrid, Spain</span>
+            <span style="font-size:11px;color:var(--text-dim);display:block;margin-top:2px">14 open to trade or sell</span>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;min-width:160px;flex-shrink:0;cursor:pointer">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:8px">🎧</div>
+            <strong style="font-size:13px;display:block;margin-bottom:2px">@recordhunter_ba</strong>
+            <span style="font-size:11px;color:var(--text-muted);display:block">📍 Buenos Aires, AR</span>
+            <span style="font-size:11px;color:var(--text-dim);display:block;margin-top:2px">8 open to trade or sell</span>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;min-width:160px;flex-shrink:0;cursor:pointer">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:8px">🎼</div>
+            <strong style="font-size:13px;display:block;margin-bottom:2px">@classicrockbcn</strong>
+            <span style="font-size:11px;color:var(--text-muted);display:block">📍 Barcelona, Spain</span>
+            <span style="font-size:11px;color:var(--text-dim);display:block;margin-top:2px">23 open to trade or sell</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="goTo('screen-collection')">
+      <div class="nav-icon">📦</div><div class="nav-label">Home</div>
+    </div>
+    <div class="nav-item active">
+      <div class="nav-icon">🔍</div><div class="nav-label">Explore</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-feed')">
+      <div class="nav-icon nav-badge">🎬</div><div class="nav-label">Feed</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-alerts')">
+      <div class="nav-icon nav-badge">🔔</div><div class="nav-label">Alerts</div>
+    </div>
+    <div class="nav-item" onclick="goTo('screen-profile')">
+      <div class="nav-icon">👤</div><div class="nav-label">Profile</div>
     </div>
   </div>
 </div>
@@ -3924,10 +4096,14 @@
     if (query.length < 1) {
       dropdown.style.display = 'none';
       input.style.borderColor = query.length === 0 ? 'var(--border)' : 'var(--gold)';
+      const exploreContent = document.getElementById('explore-content');
+      if (exploreContent) exploreContent.style.display = 'block';
       return;
     }
 
     input.style.borderColor = 'var(--gold)';
+    const exploreContent = document.getElementById('explore-content');
+    if (exploreContent) exploreContent.style.display = 'none';
     const q = query.toLowerCase();
     const matches = searchCatalog.filter(item =>
       item.name.toLowerCase().includes(q) || item.sub.toLowerCase().includes(q)
@@ -3963,6 +4139,8 @@
     input.style.borderColor = 'var(--border)';
     document.getElementById('search-dropdown').style.display = 'none';
     document.getElementById('search-clear').style.display = 'none';
+    const ec = document.getElementById('explore-content');
+    if (ec) ec.style.display = 'block';
     input.focus();
   }
 
