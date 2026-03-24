@@ -1,5 +1,44 @@
 # Reliqia MVP — Release Notes
-**Version:** 0.1.0
+
+---
+
+## Version 0.2.0
+**Date:** 2026-03-24
+**Type:** Interactive prototype (HTML · no backend)
+**Live:** [ice-garmendia.github.io/reliqia-mvp](https://ice-garmendia.github.io/reliqia-mvp)
+
+### What's new in 0.2.0
+
+#### Explore — new dedicated discovery screen
+- **Explore tab (🔍)** added to the bottom nav as the second item; replaces the search bar that was embedded in the Home (collection) screen
+- **Default content when not searching:** Trending now (horizontal scroll of popular artists/formats), Recently listed (items with location and time since posting), Collectors near you (horizontal scroll of member cards)
+- **Search with autocomplete:** filters catalog by artist, title and format from the first character; dropdown shows up to 6 results with item status badge; discovery content hides during search and reappears on clear
+
+#### Item status — simplified taxonomy
+- **"Open to trade or sell"** now replaces the previous two separate states ("Open to trade" and "Spare"); removes the need for collectors to distinguish between them at catalog time
+- Updated across all screens: collection tabs, item picker, stats chips, privacy settings, search results badges and all item cards
+
+#### Item location
+- Every item card and popup now shows **"Item located in 📍 [city, country]"** so buyers and traders immediately know where the item ships from
+- Applied across: collection list, swap match, wishlist alerts, reel feed cards, favorites, batch proposal item picker
+
+#### Trust & escrow — My Orders screen
+- **My Orders tab** in the collection screen shows active and completed transactions with status indicators
+- **Order detail** shows the full escrow flow step by step: payment held → item shipped → delivery confirmed → funds released; based on the Stripe escrow model defined in the product spec
+
+---
+
+### Screens added in 0.2.0
+
+| Screen | Description |
+|---|---|
+| **Explore** | Search + discovery: trending, recently listed, collectors nearby |
+| **My Orders** | Active and completed transactions with escrow status tracker |
+| **Order detail** | Step-by-step escrow flow for a single transaction |
+
+---
+
+## Version 0.1.0
 **Date:** 2026-03-22
 **Type:** Interactive prototype (HTML · no backend)
 **Live:** [ice-garmendia.github.io/reliqia-mvp](https://ice-garmendia.github.io/reliqia-mvp)
