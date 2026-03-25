@@ -2680,13 +2680,13 @@
           <strong>47</strong>
           <span>Trades</span>
         </div>
-        <div class="profile-stat">
-          <strong>14</strong>
-          <span>Open to trade or sell</span>
+        <div class="profile-stat" style="cursor:pointer" onclick="goTo('screen-followers')">
+          <strong>83</strong>
+          <span>Followers</span>
         </div>
-        <div class="profile-stat">
-          <strong>2y</strong>
-          <span>Member</span>
+        <div class="profile-stat" style="cursor:pointer" onclick="goTo('screen-following')">
+          <strong>41</strong>
+          <span>Following</span>
         </div>
       </div>
 
@@ -2737,6 +2737,12 @@
         </div>
       </div>
 
+      <button class="btn btn-surface" style="width:100%;margin-bottom:12px" onclick="goTo('screen-following')">
+        👥 Following <span style="color:var(--text-dim);font-weight:400;font-size:12px">· 41 collectors</span>
+      </button>
+      <button class="btn btn-surface" style="width:100%;margin-bottom:12px" onclick="goTo('screen-followers')">
+        👤 Followers <span style="color:var(--text-dim);font-weight:400;font-size:12px">· 83 collectors</span>
+      </button>
       <button class="btn btn-surface" style="width:100%;margin-bottom:12px" onclick="goTo('screen-orders')">
         📋 My orders
       </button>
@@ -2881,6 +2887,7 @@
       <div class="profile-handle">@johndoe</div>
       <div class="profile-location">📍 Spain</div>
       <div class="profile-rep" style="margin:12px auto 0">★ 4.9 · Trusted member</div>
+      <button id="follow-btn" class="btn btn-primary" style="margin-top:16px;min-width:120px" onclick="toggleFollow()">+ Follow</button>
     </div>
 
     <div style="padding: 16px 20px">
@@ -2893,7 +2900,7 @@
           <strong>47</strong><span>Trades</span>
         </div>
         <div class="profile-stat">
-          <strong>20</strong><span>Open to trade or sell</span>
+          <strong>83</strong><span>Followers</span>
         </div>
         <div class="profile-stat">
           <strong>2y</strong><span>Member</span>
@@ -3863,6 +3870,34 @@
   </div>
 </div>
 
+<!-- ===================== SCREEN: FOLLOWING ===================== -->
+<div class="screen" id="screen-following">
+  <nav class="navbar">
+    <button class="btn btn-ghost btn-sm" onclick="goTo('screen-profile')">← Back</button>
+    <div class="navbar-logo">Following · 41</div>
+    <div class="navbar-actions"></div>
+  </nav>
+  <div class="page screen-inner">
+    <p style="font-size:13px;color:var(--text-muted);margin:0 0 16px">Collectors you follow. You'll see their new listings and trades in your feed.</p>
+
+    <div id="following-list"></div>
+  </div>
+</div>
+
+<!-- ===================== SCREEN: FOLLOWERS ===================== -->
+<div class="screen" id="screen-followers">
+  <nav class="navbar">
+    <button class="btn btn-ghost btn-sm" onclick="goTo('screen-profile')">← Back</button>
+    <div class="navbar-logo">Followers · 83</div>
+    <div class="navbar-actions"></div>
+  </nav>
+  <div class="page screen-inner">
+    <p style="font-size:13px;color:var(--text-muted);margin:0 0 16px">Collectors who follow you.</p>
+
+    <div id="followers-list"></div>
+  </div>
+</div>
+
 <!-- ===================== SCREEN: ADD ITEM ===================== -->
 <div class="screen" id="screen-add-item">
   <nav class="navbar">
@@ -3950,6 +3985,8 @@
     window.scrollTo(0, 0);
     if (screenId === 'screen-feed') initReelFeed();
     if (screenId === 'screen-proposal-summary') renderProposalSummary();
+    if (screenId === 'screen-following') renderCollectorList('following-list', followingData, 'mutual', 'mutual');
+    if (screenId === 'screen-followers') renderCollectorList('followers-list', followersData, 'youFollow', 'youFollow');
     if (screenId === 'screen-swap-proposal') {
       offerItems.length = 0;
       requestItems.length = 0;
@@ -4333,6 +4370,71 @@
       });
     });
   });
+
+  // ---- FOLLOW TOGGLE ----
+  let isFollowing = false;
+  function toggleFollow() {
+    isFollowing = !isFollowing;
+    const btn = document.getElementById('follow-btn');
+    if (isFollowing) {
+      btn.textContent = '✓ Following';
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-surface');
+    } else {
+      btn.textContent = '+ Follow';
+      btn.classList.add('btn-primary');
+      btn.classList.remove('btn-surface');
+    }
+  }
+
+  // ---- FOLLOWING / FOLLOWERS DATA ----
+  const followingData = [
+    { emoji:'🎸', handle:'@vinylmadrid',      location:'Madrid, Spain',       cats:'Vinyl · CDs',           items:92,  mutual:true  },
+    { emoji:'🎧', handle:'@recordhunter_ba',  location:'Buenos Aires, AR',    cats:'Vinyl · Cassettes',     items:57,  mutual:false },
+    { emoji:'🎼', handle:'@classicrockbcn',   location:'Barcelona, Spain',    cats:'Vinyl · CDs',           items:134, mutual:true  },
+    { emoji:'🎹', handle:'@jazzcollector_ny', location:'New York, US',        cats:'Vinyl · Jazz',          items:211, mutual:false },
+    { emoji:'🥁', handle:'@drummerbrno',      location:'Brno, CZ',            cats:'CDs · Memorabilia',     items:43,  mutual:false },
+    { emoji:'🎺', handle:'@funkarchive',      location:'London, UK',          cats:'Vinyl · Funk · Soul',   items:309, mutual:true  },
+  ];
+  const followersData = [
+    { emoji:'🎸', handle:'@vinylmadrid',      location:'Madrid, Spain',       cats:'Vinyl · CDs',           items:92,  youFollow:true  },
+    { emoji:'🎼', handle:'@classicrockbcn',   location:'Barcelona, Spain',    cats:'Vinyl · CDs',           items:134, youFollow:true  },
+    { emoji:'🎺', handle:'@funkarchive',      location:'London, UK',          cats:'Vinyl · Funk · Soul',   items:309, youFollow:true  },
+    { emoji:'🪗', handle:'@folkhunter_pt',    location:'Lisbon, Portugal',    cats:'Vinyl · Folk',          items:67,  youFollow:false },
+    { emoji:'🎻', handle:'@strings_vienna',   location:'Vienna, Austria',     cats:'Classical · Vinyl',     items:88,  youFollow:false },
+    { emoji:'🎤', handle:'@punkzine_ber',     location:'Berlin, Germany',     cats:'Vinyl · Punk · CDs',    items:156, youFollow:false },
+    { emoji:'🥁', handle:'@metalvault_sao',   location:'São Paulo, BR',       cats:'CDs · Metal',           items:201, youFollow:false },
+  ];
+
+  function renderCollectorList(containerId, data, followingKey, mutualKey) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = data.map((c, i) => `
+      <div style="display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;cursor:pointer" onclick="goTo('screen-public-profile')">
+        <div style="width:46px;height:46px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${c.emoji}</div>
+        <div style="flex:1;min-width:0">
+          <strong style="font-size:13px;display:block">${c.handle}</strong>
+          <span style="font-size:11px;color:var(--text-muted);display:block">📍 ${c.location}</span>
+          <span style="font-size:11px;color:var(--text-dim);display:block;margin-top:2px">${c.cats} · ${c.items} items</span>
+          ${c[mutualKey] ? '<span style="font-size:10px;color:var(--gold)">↔ Mutual</span>' : ''}
+        </div>
+        <button class="btn ${c[followingKey] ? 'btn-surface' : 'btn-primary'}" style="font-size:12px;padding:6px 12px;flex-shrink:0" onclick="event.stopPropagation();toggleListFollow(this)">${c[followingKey] ? '✓ Following' : '+ Follow'}</button>
+      </div>
+    `).join('');
+  }
+
+  function toggleListFollow(btn) {
+    const following = btn.textContent.trim() === '✓ Following';
+    if (following) {
+      btn.textContent = '+ Follow';
+      btn.classList.remove('btn-surface');
+      btn.classList.add('btn-primary');
+    } else {
+      btn.textContent = '✓ Following';
+      btn.classList.add('btn-surface');
+      btn.classList.remove('btn-primary');
+    }
+  }
 
   function selectFormat(el, val) {
     el.closest('div').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
