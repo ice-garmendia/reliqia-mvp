@@ -1,5 +1,5 @@
 .claude/
 research/
-validation/
+validation/*.csv
 photos/
 CD-000/
