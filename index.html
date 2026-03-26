@@ -1691,6 +1691,84 @@
   gap: 3px;
 }
 
+  /* SUPPORT FAB */
+  #support-fab {
+    position: fixed;
+    bottom: 76px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    z-index: 200;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #support-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 201;
+  }
+  #support-sheet {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-radius: 20px 20px 0 0;
+    padding: 16px 20px 32px;
+    z-index: 202;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .support-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .support-option:hover { border-color: var(--gold); }
+  .support-option-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--surface2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .faq-item {
+    margin-bottom: 16px;
+  }
+  .faq-item strong {
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .faq-item p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
   /* PROTOTYPE NOTE */
   .proto-note {
     position: fixed;
@@ -3976,6 +4054,93 @@
   </div>
 </div>
 
+<!-- ===================== SUPPORT BUTTON + SHEET ===================== -->
+<button id="support-fab" onclick="openSupport()" aria-label="Help & Support">?</button>
+
+<div id="support-overlay" onclick="closeSupport()"></div>
+
+<div id="support-sheet">
+  <div style="width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px"></div>
+  <div style="font-size:16px;font-weight:700;margin-bottom:4px">Help & Support</div>
+  <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px">Reliqia prototype · v0.2.0</div>
+
+  <!-- Option 1: Chat -->
+  <a href="mailto:hello@reliqia.com?subject=Question about Reliqia" style="text-decoration:none">
+    <div class="support-option">
+      <div class="support-option-icon">💬</div>
+      <div style="flex:1">
+        <strong style="font-size:14px;display:block">Chat with the team</strong>
+        <span style="font-size:12px;color:var(--text-muted)">We usually reply within 24 hours</span>
+      </div>
+      <span style="color:var(--text-dim);font-size:18px">›</span>
+    </div>
+  </a>
+
+  <!-- Option 2: Report -->
+  <div class="support-option" onclick="openReport()">
+    <div class="support-option-icon">🐛</div>
+    <div style="flex:1">
+      <strong style="font-size:14px;display:block">Report a problem</strong>
+      <span style="font-size:12px;color:var(--text-muted)">Something not working? Tell us</span>
+    </div>
+    <span style="color:var(--text-dim);font-size:18px">›</span>
+  </div>
+
+  <!-- Option 3: FAQ -->
+  <div class="support-option" onclick="toggleFaq()">
+    <div class="support-option-icon">❓</div>
+    <div style="flex:1">
+      <strong style="font-size:14px;display:block">FAQ</strong>
+      <span style="font-size:12px;color:var(--text-muted)">Common questions about Reliqia</span>
+    </div>
+    <span id="faq-arrow" style="color:var(--text-dim);font-size:18px">›</span>
+  </div>
+
+  <div id="faq-content" style="display:none;margin-top:4px;border-top:1px solid var(--border);padding-top:16px">
+    <div class="faq-item">
+      <strong>Is Reliqia free to join?</strong>
+      <p>Yes. Creating an account and cataloging your collection is always free. We only charge a small commission when a transaction closes.</p>
+    </div>
+    <div class="faq-item">
+      <strong>How does the swap work?</strong>
+      <p>Our AI matches your open-to-trade items with other collectors' wishlists. When there's a compatible match, both parties receive a proposal and can accept, counter, or decline.</p>
+    </div>
+    <div class="faq-item">
+      <strong>Is my payment protected?</strong>
+      <p>Yes. All transactions go through escrow — funds are held until the buyer confirms the item arrived in the agreed condition. Then the payment is released to the seller.</p>
+    </div>
+    <div class="faq-item">
+      <strong>What does the authenticity score mean?</strong>
+      <p>It's based on the photos the seller uploaded. Our system checks that the item matches the description. The higher the score, the more signals we could verify.</p>
+    </div>
+    <div class="faq-item" style="margin-bottom:0">
+      <strong>This is a prototype — is my data saved?</strong>
+      <p>No. This is a clickable demo with no backend. Nothing you enter is stored. It's built to show how Reliqia will work.</p>
+    </div>
+  </div>
+
+  <!-- Report form (hidden by default) -->
+  <div id="report-form" style="display:none;margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+    <div style="font-size:13px;font-weight:600;margin-bottom:12px">What happened?</div>
+    <select id="report-screen" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-size:13px;margin-bottom:10px;box-sizing:border-box">
+      <option value="">Select the screen where it happened</option>
+      <option>Home / My collection</option>
+      <option>Explore</option>
+      <option>Swap match</option>
+      <option>Build your offer</option>
+      <option>Reel feed</option>
+      <option>Alerts</option>
+      <option>Profile</option>
+      <option>My Orders</option>
+      <option>Other</option>
+    </select>
+    <textarea id="report-text" placeholder="Describe what went wrong..." style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-size:13px;min-height:80px;resize:none;box-sizing:border-box;font-family:inherit"></textarea>
+    <button class="btn btn-primary" style="width:100%;margin-top:10px" onclick="submitReport()">Send report</button>
+    <div id="report-thanks" style="display:none;text-align:center;padding:12px;color:var(--green);font-size:13px">✓ Thanks! We'll look into it.</div>
+  </div>
+
+</div>
+
 <div class="proto-note">Prototype · click to navigate</div>
 
 <script>
@@ -4434,6 +4599,37 @@
       btn.classList.add('btn-surface');
       btn.classList.remove('btn-primary');
     }
+  }
+
+  // ---- SUPPORT ----
+  function openSupport() {
+    document.getElementById('support-overlay').style.display = 'block';
+    document.getElementById('support-sheet').style.display = 'block';
+  }
+  function closeSupport() {
+    document.getElementById('support-overlay').style.display = 'none';
+    document.getElementById('support-sheet').style.display = 'none';
+    document.getElementById('faq-content').style.display = 'none';
+    document.getElementById('faq-arrow').textContent = '›';
+    document.getElementById('report-form').style.display = 'none';
+    document.getElementById('report-thanks').style.display = 'none';
+  }
+  function toggleFaq() {
+    const faq = document.getElementById('faq-content');
+    const arrow = document.getElementById('faq-arrow');
+    const open = faq.style.display === 'block';
+    faq.style.display = open ? 'none' : 'block';
+    arrow.textContent = open ? '›' : '↓';
+  }
+  function openReport() {
+    document.getElementById('report-form').style.display = 'block';
+    document.getElementById('report-form').scrollIntoView({ behavior: 'smooth' });
+  }
+  function submitReport() {
+    document.getElementById('report-form').querySelectorAll('select,textarea').forEach(el => el.style.display = 'none');
+    document.getElementById('report-form').querySelector('.btn').style.display = 'none';
+    document.getElementById('report-thanks').style.display = 'block';
+    setTimeout(closeSupport, 1800);
   }
 
   function selectFormat(el, val) {
