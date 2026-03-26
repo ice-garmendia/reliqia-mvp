@@ -1,5 +1,5 @@
 .claude/
-research/
+# research/ — now tracked
 validation/*.csv
 photos/
 CD-000/
